@@ -14,7 +14,16 @@ class Database
     private $password;
     private $port;
     private $ssl_ca;
+    private static $instance = null;
     private static $connection = null;
+
+    public static function getInstance()
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
 
     public function __construct()
     {
@@ -70,6 +79,6 @@ class Database
 }
 
 // Global instance for existing scripts
-$database = new Database();
+$database = Database::getInstance();
 $pdo = $database->getConnection();
 ?>
