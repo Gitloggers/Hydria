@@ -88,62 +88,80 @@ include_once 'admin_header.php';
     </div>
 <?php endif; ?>
 
-<div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 3rem;">
+<div class="settings-flex-container" style="display: flex; flex-wrap: wrap; gap: 3rem;">
     <!-- Company Info & System Prefs -->
-    <div style="display: flex; flex-direction: column; gap: 3rem;">
-        <div class="widget-card" style="background: rgba(255,255,255,0.7); backdrop-filter: blur(10px); color: var(--primary); border: 1px solid var(--border);" data-aos="fade-up">
+    <div class="settings-card-wrapper" style="flex: 1.5; min-width: min(100%, 450px);">
+        <div class="widget-card" style="background: rgba(255,255,255,0.7); backdrop-filter: blur(10px); color: var(--primary); border: 1px solid var(--border); height: 100%;" data-aos="fade-up">
             <h3 style="margin-top: 0; font-weight: 800; letter-spacing: -0.5px;">🏢 Company Information</h3>
             <form method="post" action="">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem;">
-                    <div>
+                <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 2rem;">
+                    <div style="flex: 1; min-width: 200px;">
                         <label style="display: block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem;">Public Email</label>
                         <input type="email" name="settings[company_email]" value="<?= htmlspecialchars($settings['company_email'] ?? '') ?>" 
-                               style="width: 100%; padding: 0.875rem; border-radius: 0.75rem; border: 1px solid var(--border); font-family: inherit;">
+                               style="width: 100%; max-width: 100%; padding: 0.875rem; border-radius: 0.75rem; border: 1px solid var(--border); font-family: inherit;">
                     </div>
-                    <div>
+                    <div style="flex: 1; min-width: 200px;">
                         <label style="display: block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem;">Contact Phone</label>
                         <input type="text" name="settings[company_phone]" value="<?= htmlspecialchars($settings['company_phone'] ?? '') ?>" 
-                               style="width: 100%; padding: 0.875rem; border-radius: 0.75rem; border: 1px solid var(--border); font-family: inherit;">
+                               style="width: 100%; max-width: 100%; padding: 0.875rem; border-radius: 0.75rem; border: 1px solid var(--border); font-family: inherit;">
                     </div>
                 </div>
                 <div style="margin-top: 1.5rem;">
                     <label style="display: block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem;">Office Address</label>
                     <input type="text" name="settings[company_address]" value="<?= htmlspecialchars($settings['company_address'] ?? '') ?>" 
-                           style="width: 100%; padding: 0.875rem; border-radius: 0.75rem; border: 1px solid var(--border); font-family: inherit;">
+                           style="width: 100%; max-width: 100%; padding: 0.875rem; border-radius: 0.75rem; border: 1px solid var(--border); font-family: inherit;">
                 </div>
                 <div style="margin-top: 1.5rem;">
                     <label style="display: block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem;">Footer Description</label>
-                    <textarea name="settings[footer_desc]" rows="3" style="width: 100%; padding: 0.875rem; border-radius: 0.75rem; border: 1px solid var(--border); font-family: inherit; resize: none;"><?= htmlspecialchars($settings['footer_desc'] ?? '') ?></textarea>
+                    <textarea name="settings[footer_desc]" rows="3" style="width: 100%; max-width: 100%; padding: 0.875rem; border-radius: 0.75rem; border: 1px solid var(--border); font-family: inherit; resize: none;"><?= htmlspecialchars($settings['footer_desc'] ?? '') ?></textarea>
                 </div>
-                <button type="submit" name="update_settings" class="btn btn-primary" style="margin-top: 2rem; width: 100%; font-weight: 800;">Save System Preferences</button>
+                <button type="submit" name="update_settings" class="btn btn-primary settings-btn" style="margin-top: 2rem; width: 100%; font-weight: 800;">Save System Preferences</button>
             </form>
         </div>
     </div>
 
     <!-- Security Section -->
-    <div class="widget-card" style="background: var(--primary); color: #fff; height: fit-content;" data-aos="fade-left">
-        <h3 style="margin-top: 0; font-weight: 800; letter-spacing: -0.5px; color: var(--secondary);">🔒 Security Access</h3>
-        <p style="font-size: 0.875rem; color: rgba(255,255,255,0.6); margin-bottom: 2.5rem;">Update your administrative credentials.</p>
-        
-        <form method="post" action="">
-            <div style="margin-bottom: 1.5rem;">
-                <label style="display: block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 0.5rem;">Current Password</label>
-                <input type="password" name="current_password" required 
-                       style="width: 100%; padding: 0.875rem; border-radius: 0.75rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #fff; font-family: inherit;">
-            </div>
-            <div style="margin-bottom: 1.5rem;">
-                <label style="display: block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 0.5rem;">New Password</label>
-                <input type="password" name="new_password" required 
-                       style="width: 100%; padding: 0.875rem; border-radius: 0.75rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #fff; font-family: inherit;">
-            </div>
-            <div style="margin-bottom: 2.5rem;">
-                <label style="display: block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 0.5rem;">Confirm New Password</label>
-                <input type="password" name="confirm_password" required 
-                       style="width: 100%; padding: 0.875rem; border-radius: 0.75rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #fff; font-family: inherit;">
-            </div>
-            <button type="submit" name="change_password" class="btn btn-primary" style="width: 100%; font-weight: 800;">Update Password</button>
-        </form>
+    <div class="settings-card-wrapper" style="flex: 1; min-width: min(100%, 320px);">
+        <div class="widget-card" style="background: var(--primary); color: #fff; height: 100%;" data-aos="fade-left">
+            <h3 style="margin-top: 0; font-weight: 800; letter-spacing: -0.5px; color: var(--secondary);">🔒 Security Access</h3>
+            <p style="font-size: 0.875rem; color: rgba(255,255,255,0.6); margin-bottom: 2.5rem;">Update your administrative credentials.</p>
+            
+            <form method="post" action="">
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 0.5rem;">Current Password</label>
+                    <input type="password" name="current_password" required 
+                           style="width: 100%; max-width: 100%; padding: 0.875rem; border-radius: 0.75rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #fff; font-family: inherit;">
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 0.5rem;">New Password</label>
+                    <input type="password" name="new_password" required 
+                           style="width: 100%; max-width: 100%; padding: 0.875rem; border-radius: 0.75rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #fff; font-family: inherit;">
+                </div>
+                <div style="margin-bottom: 2.5rem;">
+                    <label style="display: block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 0.5rem;">Confirm New Password</label>
+                    <input type="password" name="confirm_password" required 
+                           style="width: 100%; max-width: 100%; padding: 0.875rem; border-radius: 0.75rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #fff; font-family: inherit;">
+                </div>
+                <button type="submit" name="change_password" class="btn btn-primary settings-btn" style="width: 100%; font-weight: 800;">Update Password</button>
+            </form>
+        </div>
     </div>
 </div>
+
+<style>
+    @media (max-width: 992px) {
+        .settings-flex-container {
+            flex-direction: column !important;
+        }
+        .settings-card-wrapper {
+            width: 100% !important;
+            margin-bottom: 1rem;
+        }
+        .settings-btn {
+            padding: 1.25rem !important;
+            font-size: 1rem !important;
+        }
+    }
+</style>
 
 <?php include_once 'admin_footer.php'; ?>

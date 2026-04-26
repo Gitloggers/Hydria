@@ -269,15 +269,16 @@ ul {
 }
 
 .hero h1 {
-    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-size: clamp(2.5rem, 8vw, 5rem);
     color: #fff;
     margin-bottom: clamp(1rem, 3vh, 2rem);
     text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     line-height: 1.1;
+    letter-spacing: -2px;
 }
 
 .hero p {
-    font-size: clamp(1rem, 2vw, 1.25rem);
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
     margin-bottom: clamp(1.5rem, 4vh, 3rem);
     max-width: 600px;
     color: rgba(255, 255, 255, 0.9);
@@ -285,7 +286,7 @@ ul {
 
 .hero-buttons {
     display: flex;
-    gap: 1rem;
+    gap: 1.5rem;
     flex-wrap: wrap;
 }
 
@@ -297,12 +298,12 @@ section {
 }
 
 .section-title {
-    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    font-size: clamp(2rem, 10vw, 4.5rem);
     font-weight: 800;
-    line-height: 1;
-    margin-bottom: 2rem;
+    line-height: 0.9;
+    margin-bottom: 2.5rem;
     text-transform: uppercase;
-    letter-spacing: -2px;
+    letter-spacing: -3px;
     position: relative;
     display: inline-block;
 }
@@ -705,12 +706,16 @@ section {
 
     .about-image {
         order: -1;
-        height: 400px;
+        height: clamp(300px, 50vh, 400px);
+        position: relative; /* Disable sticky on mobile */
+        top: 0;
+        margin-bottom: 2rem;
     }
 
     /* Tablet optimization for Bento Grid */
     .bento-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-auto-rows: auto;
     }
 }
 
@@ -780,7 +785,7 @@ section {
         justify-content: center;
     }
 
-    /* Mobile optimization for Bento Grid */
+    /* Mobile optimization for Bento Grid (1 Column) */
     .bento-grid {
         grid-template-columns: 1fr;
         grid-auto-rows: auto;
@@ -789,5 +794,17 @@ section {
     .project-card.large {
         grid-column: span 1;
         grid-row: span 1;
+    }
+
+    .project-img-placeholder {
+        height: 250px;
+    }
+}
+
+/* Tablet Stacking (2 Columns) */
+@media (min-width: 600px) and (max-width: 1023px) {
+    .bento-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-auto-rows: 300px;
     }
 }

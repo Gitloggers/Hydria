@@ -236,9 +236,9 @@ include_once 'admin_header.php';
 
 <?= $message ?>
 
-<div style="display: grid; grid-template-columns: 1fr 2fr; gap: 4rem; align-items: flex-start;">
+<div class="projects-flex-layout" style="display: flex; flex-wrap: wrap; gap: 3rem;">
     <!-- Add Project Form -->
-    <div class="card-glass" data-aos="fade-right">
+    <div class="card-glass" style="flex: 1; min-width: min(100%, 350px);" data-aos="fade-right">
         <h3 style="margin: 0 0 2rem 0; font-weight: 800; letter-spacing: -0.5px;">Add New Build</h3>
         <form method="post" action="" enctype="multipart/form-data">
             <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
@@ -263,8 +263,9 @@ include_once 'admin_header.php';
     </div>
 
     <!-- Project List -->
-    <div class="table-card" data-aos="fade-left">
-        <table>
+    <div class="table-card" style="flex: 2; min-width: min(100%, 500px);" data-aos="fade-left">
+        <div class="table-responsive">
+            <table>
             <thead>
                 <tr>
                     <th>Image</th>
@@ -317,6 +318,7 @@ include_once 'admin_header.php';
             </tbody>
         </table>
     </div>
+</div>
 </div>
 
 <?php include_once 'admin_footer.php'; ?>

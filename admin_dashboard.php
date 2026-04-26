@@ -71,50 +71,53 @@ try {
     </div>
 </div>
 
-<div style="display: grid; grid-template-columns: 2.2fr 0.8fr; gap: 3rem;">
+<div class="dashboard-grid">
     <!-- Trend & Recent Inquiries -->
-    <div>
         <h2 style="margin: 0 0 1.5rem 0; font-weight: 800; letter-spacing: -1px; display: flex; align-items: center; gap: 1rem;" data-aos="fade-right">
             <span>📈</span> Inquiry Trends (7 Days)
         </h2>
-        <div class="table-card" style="padding: 2.5rem; margin-bottom: 3rem; background: #fff;" data-aos="fade-right" data-aos-delay="100">
-            <canvas id="inquiryChart" style="width: 100%; height: 320px;"></canvas>
+        <div class="table-card" style="padding: clamp(1.5rem, 6vw, 3rem); margin-bottom: 4rem; background: #fff;" data-aos="fade-right" data-aos-delay="100">
+            <div style="height: clamp(250px, 40vh, 350px); width: 100%; position: relative;">
+                <canvas id="inquiryChart"></canvas>
+            </div>
         </div>
 
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;" data-aos="fade-right" data-aos-delay="200">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin: 3rem 0 1.5rem 0;" data-aos="fade-right" data-aos-delay="200">
             <h2 style="margin: 0; font-weight: 800; letter-spacing: -0.5px;">Recent Inquiries</h2>
             <a href="admin_inquiries.php" style="color: var(--secondary); font-weight: 700; text-decoration: none; font-size: 0.875rem;">CRM Portal →</a>
         </div>
         <div class="table-card" data-aos="fade-right" data-aos-delay="300">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Service</th>
-                        <th>Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    $stmt = $pdo->query("SELECT name, service, created_at FROM inquiries ORDER BY created_at DESC LIMIT 5");
-                    if ($stmt->rowCount() > 0) {
-                        while ($row = $stmt->fetch()) {
-                            $date = date('M j, Y', strtotime($row['created_at']));
-                            echo "<tr>";
-                            echo "<td><strong>" . htmlspecialchars($row['name']) . "</strong></td>";
-                            echo "<td><span style='background: #F1F5F9; padding: 0.4rem 0.8rem; border-radius: 0.75rem; font-size: 0.75rem; font-weight: 700; color: var(--primary);'>" . htmlspecialchars($row['service']) . "</span></td>";
-                            echo "<td>" . htmlspecialchars($date) . "</td>";
-                            echo "</tr>";
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Service</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $stmt = $pdo->query("SELECT name, service, created_at FROM inquiries ORDER BY created_at DESC LIMIT 5");
+                        if ($stmt->rowCount() > 0) {
+                            while ($row = $stmt->fetch()) {
+                                $date = date('M j, Y', strtotime($row['created_at']));
+                                echo "<tr>";
+                                echo "<td><strong>" . htmlspecialchars($row['name']) . "</strong></td>";
+                                echo "<td><span style='background: #F1F5F9; padding: 0.4rem 0.8rem; border-radius: 0.75rem; font-size: 0.75rem; font-weight: 700; color: var(--primary);'>" . htmlspecialchars($row['service']) . "</span></td>";
+                                echo "<td>" . htmlspecialchars($date) . "</td>";
+                                echo "</tr>";
+                            }
+                        } else {
+                            echo "<tr><td colspan='3' style='text-align: center; padding: 4rem;'>
+                                <div style='font-size: 3rem; margin-bottom: 1rem;'>✨</div>
+                                <div style='font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px;'>Clean Workspace</div>
+                            </td></tr>";
                         }
-                    } else {
-                        echo "<tr><td colspan='3' style='text-align: center; padding: 4rem;'>
-                            <div style='font-size: 3rem; margin-bottom: 1rem;'>✨</div>
-                            <div style='font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px;'>Clean Workspace</div>
-                        </td></tr>";
-                    }
-                    ?>
-                </tbody>
-            </table>
+                        ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 

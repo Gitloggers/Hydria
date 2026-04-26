@@ -16,7 +16,8 @@ include_once 'admin_header.php';
 </div>
 
 <div class="table-card">
-    <table id="crmTable">
+    <div class="table-responsive">
+        <table id="crmTable">
         <thead>
             <tr>
                 <th>Status</th>
@@ -66,6 +67,7 @@ include_once 'admin_header.php';
             ?>
         </tbody>
     </table>
+    </div>
 </div>
 
 <!-- Inquiry Detail Modal -->
