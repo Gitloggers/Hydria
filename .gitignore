@@ -10,4 +10,5 @@ php_errors.log
 # assets/proj_*
 
 # Database Config (IMPORTANT: If db.php has passwords, don't share it!)
-# db.php
+db.php
+config.php
