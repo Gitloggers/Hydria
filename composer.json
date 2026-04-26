@@ -1,0 +1,8 @@
+{
+    "name": "hydria/website",
+    "description": "Hydria Construction Next-Gen Platform",
+    "type": "project",
+    "require": {
+        "php": "^8.1"
+    }
+}
