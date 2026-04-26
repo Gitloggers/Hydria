@@ -9,6 +9,5 @@ php_errors.log
 # Uploads (Optional: keep them if you want your gallery images on GitHub)
 # assets/proj_*
 
-# Database Config (IMPORTANT: If db.php has passwords, don't share it!)
-db.php
+# Database Config (KEEP config.php HIDDEN, but allow db.php)
 config.php
