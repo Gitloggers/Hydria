@@ -121,19 +121,53 @@ require_once 'check_auth.php';
         .main-content {
             flex: 1;
             margin-left: 280px;
-            padding: 3rem;
+            padding: clamp(1rem, 5vw, 3rem);
             box-sizing: border-box;
+            width: 100%;
         }
 
-        .page-header-wrapper {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 3rem;
+        /* Mobile Adjustments */
+        @media (max-width: 992px) {
+            body {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding-bottom: 1rem;
+            }
+
+            .sidebar-nav {
+                flex-direction: row;
+                overflow-x: auto;
+                padding: 0 1rem;
+                gap: 0.5rem;
+            }
+
+            .nav-link {
+                white-space: nowrap;
+                padding: 0.75rem 1rem;
+                font-size: 0.875rem;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .page-header h1 {
+                font-size: 1.75rem;
+            }
+            
+            .page-header-wrapper {
+                flex-direction: column;
+                gap: 1rem;
+            }
         }
 
         .page-header h1 {
-            font-size: 2.5rem;
+            font-size: clamp(1.75rem, 5vw, 2.5rem);
             font-weight: 800;
             color: var(--primary);
             margin: 0;
@@ -163,7 +197,7 @@ require_once 'check_auth.php';
         .table-card {
             background: #fff;
             border-radius: 1.5rem;
-            overflow: hidden;
+            overflow-x: auto; /* Allow horizontal scroll on small screens */
             box-shadow: var(--shadow-float);
             border: 1px solid var(--border);
         }
