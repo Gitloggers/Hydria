@@ -17,10 +17,6 @@ CREATE TABLE IF NOT EXISTS `admins` (
   UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Note: Default admin password should be hashed. 
--- Example for 'admin' / 'admin123':
--- INSERT INTO `admins` (`username`, `password_hash`) VALUES ('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi');
-
 -- --------------------------------------------------------
 -- 2. Table structure for `projects`
 -- --------------------------------------------------------
@@ -42,6 +38,7 @@ CREATE TABLE IF NOT EXISTS `inquiries` (
   `email` varchar(100) NOT NULL,
   `service` varchar(100) DEFAULT NULL,
   `message` text NOT NULL,
+  `status` varchar(20) DEFAULT 'Pending',
   `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -53,6 +50,16 @@ CREATE TABLE IF NOT EXISTS `activity_logs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `action` varchar(255) NOT NULL,
   `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+-- 5. Table structure for `settings`
+-- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `settings` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `s_key` varchar(100) UNIQUE NOT NULL,
+  `s_value` text NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
