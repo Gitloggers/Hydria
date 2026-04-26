@@ -1,8 +1,13 @@
 # Use the official PHP + Apache image
 FROM php:8.2-apache
 
-# Install MySQL extensions
-RUN docker-php-ext-install pdo pdo_mysql
+# Install System Dependencies for GD
+RUN apt-get update && apt-get install -y \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) gd pdo pdo_mysql
 
 # Enable Apache Mod_Rewrite
 RUN a2enmod rewrite
