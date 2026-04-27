@@ -28,14 +28,14 @@ class Database
     public function __construct()
     {
         // 1. Check for Cloud Environment (Render/Aiven)
-        $is_cloud = (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] !== 'localhost' && $_SERVER['HTTP_HOST'] !== '127.0.0.1');
+        $is_cloud = (getenv('DB_HOST') || (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] !== 'localhost' && $_SERVER['HTTP_HOST'] !== '127.0.0.1'));
         
         if ($is_cloud) {
-            $this->host = 'mysql-19503c8f-hydriaweb.c.aivencloud.com';
-            $this->dbname = 'defaultdb';
-            $this->username = 'avnadmin';
-            $this->password = getenv('AIVEN_PASS') ?: 'AVNS_o8-Vhcb-S3jM-FCpdWP';
-            $this->port = '14431';
+            $this->host = getenv('DB_HOST') ?: 'mysql-19503c8f-hydriaweb.c.aivencloud.com';
+            $this->dbname = getenv('DB_NAME') ?: 'defaultdb';
+            $this->username = getenv('DB_USER') ?: 'avnadmin';
+            $this->password = getenv('DB_PASS') ?: 'AVNS_o8-Vhcb-S3jM-FCpdWP';
+            $this->port = getenv('DB_PORT') ?: '14431';
             $this->ssl_ca = __DIR__ . '/ca.pem';
         } else {
             // 2. Fallback to Local XAMPP
