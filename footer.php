@@ -1,57 +1,192 @@
-<!-- Contact & Footer -->
-<footer class="footer" id="contact">
-    <div class="container footer-container">
-        <div class="footer-info">
-            <a href="#" class="logo footer-logo">
-                <span class="logo-text">HYDRIA CONSTRUCTION</span>
-            </a>
-            <?php
-            $settings = [];
-            try {
-                require_once 'db.php';
-                $stmt = $pdo->query("SELECT s_key, s_value FROM settings");
-                while ($row = $stmt->fetch()) {
-                    $settings[$row['s_key']] = $row['s_value'];
-                }
-            } catch (PDOException $e) {}
-            ?>
-            <p class="footer-desc"><?= htmlspecialchars($settings['footer_desc'] ?? 'Building excellence for over 20 years. Let\'s discuss your next project.') ?></p>
-            <div class="contact-details">
-                <p>📍 <?= htmlspecialchars($settings['company_address'] ?? 'Batong Malake, Los Baños, Laguna') ?></p>
-                <p>📞 <?= htmlspecialchars($settings['company_phone'] ?? '+63 123 456 7890') ?></p>
-                <p>✉️ <?= htmlspecialchars($settings['company_email'] ?? 'info@hydriaconstruction.com') ?></p>
+<!-- Contact Section -->
+<section id="contact" class="py-24 bg-white relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="bg-primary rounded-[3rem] overflow-hidden shadow-2xl relative">
+            <div class="absolute top-0 right-0 w-1/2 h-full hidden lg:block">
+                <img src="assets/school.jpg" alt="Contact Us" class="w-full h-full object-cover opacity-50">
+                <div class="absolute inset-0 bg-gradient-to-r from-primary to-transparent"></div>
             </div>
-            <div class="social-links">
-                <a href="https://www.facebook.com/hydriaconstruction" target="_blank" rel="noopener noreferrer"
-                    class="social-icon">Facebook</a>
-            </div>
-        </div>
 
-        <div class="footer-form">
-            <h3 class="form-title">Send Us a Message</h3>
-            <form class="contact-form" id="contactForm">
-                <input type="text" placeholder="Your Name" required class="form-input">
-                <input type="email" placeholder="Your Email" required class="form-input">
-                <select class="form-input" required>
-                    <option value="" disabled selected>Service Interested In</option>
-                    <option value="residential">Residential</option>
-                    <option value="commercial">Commercial</option>
-                    <option value="industrial">Industrial</option>
-                    <option value="other">Other</option>
-                </select>
-                <textarea placeholder="Tell us about your project..." rows="4" required class="form-input"></textarea>
-                <button type="submit" class="btn btn-primary btn-block">Submit Inquiry</button>
-            </form>
+            <div class="relative z-10 p-10 lg:p-20 lg:w-3/5">
+                <div class="space-y-4 mb-10">
+                    <h2 class="text-accent font-black text-sm uppercase tracking-[0.3em]">GET IN TOUCH</h2>
+                    <h3 class="text-white text-5xl font-display">LET'S BUILD SOMETHING GREAT</h3>
+                    <p class="text-white/60">Ready to start your project? Send us a message and our expert team will get back to you within 24 hours.</p>
+                </div>
+
+                <form id="contactForm" class="space-y-4">
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <input type="text" id="name" placeholder="Full Name" required class="w-full px-6 py-4 bg-white/5 border border-white/10 rounded-2xl text-white placeholder:text-white/30 focus:outline-none focus:border-accent transition-colors">
+                        <input type="email" id="email" placeholder="Email Address" required class="w-full px-6 py-4 bg-white/5 border border-white/10 rounded-2xl text-white placeholder:text-white/30 focus:outline-none focus:border-accent transition-colors">
+                    </div>
+                    <select id="service" required class="w-full px-6 py-4 bg-white/5 border border-white/10 rounded-2xl text-white focus:outline-none focus:border-accent transition-colors appearance-none">
+                        <option value="" disabled selected class="bg-primary">Service Interested In</option>
+                        <option value="residential" class="bg-primary">Residential</option>
+                        <option value="commercial" class="bg-primary">Commercial</option>
+                        <option value="industrial" class="bg-primary">Industrial</option>
+                        <option value="other" class="bg-primary">Other</option>
+                    </select>
+                    <textarea id="message" placeholder="Tell us about your project..." rows="4" required class="w-full px-6 py-4 bg-white/5 border border-white/10 rounded-2xl text-white placeholder:text-white/30 focus:outline-none focus:border-accent transition-colors"></textarea>
+                    
+                    <button type="submit" class="w-full py-5 bg-accent hover:bg-[#B3933B] text-white font-black rounded-2xl transition-all shadow-xl shadow-accent/20 flex items-center justify-center gap-3 group">
+                        SUBMIT INQUIRY
+                        <i data-lucide="send" class="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
+                    </button>
+                    <div id="formStatus" class="text-center text-sm font-bold mt-4"></div>
+                </form>
+            </div>
         </div>
     </div>
-    <div class="footer-bottom">
-        <p>&copy; 2026 Hydria Construction Inc. All rights reserved. <a href="login.php" class="staff-login">Staff Login</a></p>
+</section>
+
+<!-- Footer -->
+<footer class="bg-slate-50 pt-20 border-t border-slate-200">
+    <div class="max-w-7xl mx-auto px-6 pb-20">
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-20">
+            <div class="lg:col-span-2 space-y-8">
+                <a href="#home" class="flex items-center gap-3">
+                <?php
+                $settings = [];
+                try {
+                    require_once 'db.php';
+                    $stmt = $pdo->query("SELECT s_key, s_value FROM settings");
+                    while ($row = $stmt->fetch()) {
+                        $settings[$row['s_key']] = $row['s_value'];
+                    }
+                } catch (PDOException $e) {}
+                ?>
+                <a href="#home" class="flex items-center gap-3 mb-8 group">
+                    <img src="assets/logo.png" alt="Hydria Logo" class="h-12 w-auto transition-transform group-hover:scale-110">
+                    <span class="font-display text-3xl tracking-wider text-primary uppercase">HYDRIA</span>
+                </a>
+                <p class="text-slate-500 text-lg leading-relaxed max-w-md">
+                    <?= htmlspecialchars($settings['footer_desc'] ?? 'Building excellence for over 20 years. Let\'s discuss your next project.') ?>
+                </p>
+                <div class="flex items-center gap-4">
+                    <a href="https://www.facebook.com/hydriaconstruction" target="_blank" class="px-6 py-4 bg-white border border-slate-200 rounded-2xl flex items-center gap-4 text-primary hover:bg-primary hover:text-white transition-all shadow-md hover:shadow-xl hover:-translate-y-1 group">
+                        <i data-lucide="facebook" class="w-7 h-7"></i>
+                        <span class="font-black text-sm uppercase tracking-wider">Follow us on Facebook</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <h4 class="text-primary font-black text-sm uppercase tracking-widest">Contact Info</h4>
+                <ul class="space-y-4">
+                    <li class="flex gap-3 text-slate-500 italic">
+                        <i data-lucide="map-pin" class="w-5 h-5 text-accent flex-shrink-0"></i>
+                        7619 San Antonio, Los Baños, Laguna
+                    </li>
+                    <li class="flex gap-3 text-slate-500">
+                        <i data-lucide="phone" class="w-5 h-5 text-accent flex-shrink-0"></i>
+                        0926-735-0297
+                    </li>
+                    <li class="flex gap-3 text-slate-500">
+                        <i data-lucide="mail" class="w-5 h-5 text-accent flex-shrink-0"></i>
+                        hydriaconstruction@gmail.com
+                    </li>
+                </ul>
+            </div>
+
+            <div class="space-y-6">
+                <h4 class="text-primary font-black text-sm uppercase tracking-widest">Quick Links</h4>
+                <ul class="space-y-3">
+                    <li><a href="#home" class="text-slate-500 hover:text-primary transition-colors">Home</a></li>
+                    <li><a href="#about" class="text-slate-500 hover:text-primary transition-colors">About Us</a></li>
+                    <li><a href="#services" class="text-slate-500 hover:text-primary transition-colors">Our Services</a></li>
+                    <li><a href="#projects" class="text-slate-500 hover:text-primary transition-colors">Work Gallery</a></li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="bg-primary py-8 relative">
+        <div class="max-w-7xl mx-auto px-6 text-center text-white/40 text-xs font-bold uppercase tracking-widest">
+            &copy; <?= date('Y') ?> Hydria Construction Inc. All rights reserved.
+        </div>
+        <a href="login.php" class="absolute bottom-2 right-4 text-[10px] text-white/5 hover:text-accent transition-colors">Staff Portal</a>
     </div>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script src="script.js"></script>
-</body>
+<script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
 
+    // Mobile Menu Toggle
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    menuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+
+    // Navbar Scroll Effect
+    window.addEventListener('scroll', () => {
+        const nav = document.getElementById('navbar');
+        if (window.scrollY > 50) {
+            nav.classList.add('py-2', 'shadow-xl');
+            nav.classList.remove('py-4');
+        } else {
+            nav.classList.remove('py-2', 'shadow-xl');
+            nav.classList.add('py-4');
+        }
+    });
+
+    // Contact Form Handler
+    document.getElementById('contactForm')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const status = document.getElementById('formStatus');
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+        
+        status.textContent = 'Sending...';
+        status.className = 'text-center text-sm font-bold mt-4 text-white/50';
+        submitBtn.disabled = true;
+
+        const formData = {
+            name: document.getElementById('name').value,
+            email: document.getElementById('email').value,
+            service: document.getElementById('service').value,
+            message: document.getElementById('message').value
+        };
+
+        try {
+            const response = await fetch('process-contact.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+            const result = await response.json();
+            
+            if (result.success) {
+                status.textContent = 'Message sent successfully!';
+                status.className = 'text-center text-sm font-bold mt-4 text-accent';
+                e.target.reset();
+            } else {
+                status.textContent = result.message || 'Error sending message.';
+                status.className = 'text-center text-sm font-bold mt-4 text-red-400';
+            }
+        } catch (error) {
+            status.textContent = 'Network error. Please try again.';
+            status.className = 'text-center text-sm font-bold mt-4 text-red-400';
+        } finally {
+            submitBtn.disabled = false;
+        }
+    });
+
+    // Reveal on Scroll
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+</script>
+</body>
 </html>

@@ -8,44 +8,78 @@
         content="Hydria Construction Inc. - 20 Years of Building Excellence in Los Baños and beyond. Providing top-tier residential, commercial, and industrial construction services.">
     <title>Hydria Construction Inc. | Building Excellence</title>
 
-    <!-- Google Fonts: Inter for body, Outfit for headings -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;700;800&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800;900&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0D1B4B',
+                        accent: '#C9A84C',
+                    },
+                    fontFamily: {
+                        display: ['Bebas Neue', 'sans-serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="modern-ui.css">
 </head>
 
-<body>
+<body class="bg-white">
 
-    <!-- Header & Navigation -->
-    <header class="header" id="header">
-        <div class="container header-container">
-            <a href="#" class="logo">
-                <img src="assets/logo.png" alt="Hydria Construction Logo">
-                <span class="logo-text">HYDRIA</span>
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 navbar-glass">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#home" class="flex items-center gap-3 group">
+                <img src="assets/logo.png" alt="Hydria Logo" class="h-10 w-auto transition-transform group-hover:scale-110">
+                <span class="font-display text-2xl tracking-wider text-primary uppercase">HYDRIA</span>
             </a>
 
-            <nav class="nav" id="nav">
-                <ul class="nav-list">
-                    <li><a href="#hero" class="nav-link">Home</a></li>
-                    <li><a href="#about" class="nav-link">About Us</a></li>
-                    <li><a href="#services" class="nav-link">Services</a></li>
-                    <li><a href="#projects" class="nav-link">Projects</a></li>
-                    <li><a href="#contact" class="nav-link">Contact</a></li>
-                </ul>
-            </nav>
+            <!-- Desktop Links -->
+            <div class="hidden md:flex items-center gap-10">
+                <a href="#home" class="text-sm font-bold text-primary/70 hover:text-primary transition-colors">Home</a>
+                <a href="#about"
+                    class="text-sm font-bold text-primary/70 hover:text-primary transition-colors">About</a>
+                <a href="#services"
+                    class="text-sm font-bold text-primary/70 hover:text-primary transition-colors">Services</a>
+                <a href="#projects"
+                    class="text-sm font-bold text-primary/70 hover:text-primary transition-colors">Projects</a>
+                <a href="#contact"
+                    class="px-5 py-2.5 bg-primary text-white text-sm font-bold rounded-lg hover:bg-primary/90 transition-all hover:shadow-lg hover:shadow-primary/20">
+                    Get a Quote
+                </a>
+            </div>
 
-            <a href="#contact" class="btn btn-primary d-none-mobile">Get a Quote</a>
-
-            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Menu">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
+            <!-- Mobile Toggle -->
+            <button id="menu-btn" class="md:hidden text-primary">
+                <i data-lucide="menu" class="w-6 h-6"></i>
             </button>
         </div>
-    </header>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu"
+            class="hidden md:hidden absolute top-full left-0 right-0 bg-white border-t border-gray-100 shadow-xl p-6 flex flex-col gap-4 animate-slide-down">
+            <a href="#home" class="text-lg font-bold text-primary">Home</a>
+            <a href="#about" class="text-lg font-bold text-primary">About</a>
+            <a href="#services" class="text-lg font-bold text-primary">Services</a>
+            <a href="#projects" class="text-lg font-bold text-primary">Projects</a>
+            <a href="#contact" class="w-full py-4 bg-primary text-white text-center font-bold rounded-xl mt-2">Get a
+                Quote</a>
+        </div>
+    </nav>

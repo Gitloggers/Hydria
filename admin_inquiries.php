@@ -24,7 +24,7 @@ include_once 'admin_header.php';
                 <th>Client Details</th>
                 <th>Service</th>
                 <th>Received</th>
-                <th style="text-align: right;">Action</th>
+                <th style="text-align: right; width: 180px;">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -50,7 +50,12 @@ include_once 'admin_header.php';
                         echo "<td><span style='background: #F1F5F9; padding: 0.4rem 0.8rem; border-radius: 0.75rem; font-size: 0.75rem; font-weight: 700; color: var(--primary);'>" . htmlspecialchars($row['service']) . "</span></td>";
                         echo "<td><div style='font-size: 0.875rem;'>$date</div></td>";
                         echo "<td style='text-align: right;'>
-                            <button class='btn btn-view' onclick='viewInquiry(" . json_encode($row) . ")'>View Details</button>
+                            <div style='display: flex; justify-content: flex-end; gap: 0.5rem;'>
+                                <button class='btn btn-view' onclick='viewInquiry(" . json_encode($row) . ")'>View</button>
+                                <button class='btn btn-delete' onclick='confirmDelete(" . $row['id'] . ")' title='Delete Inquiry'>
+                                    <i class='fas fa-trash-alt'></i>
+                                </button>
+                            </div>
                         </td>";
                         echo "</tr>";
                     }
@@ -154,6 +159,24 @@ include_once 'admin_header.php';
         color: #fff;
         transform: scale(1.05);
     }
+    .btn-delete {
+        background: #FEF2F2;
+        color: #EF4444;
+        font-size: 0.75rem;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #FEE2E2;
+        border-radius: 0.75rem;
+        transition: var(--transition);
+    }
+    .btn-delete:hover {
+        background: #EF4444;
+        color: #fff;
+        transform: scale(1.1);
+    }
     .modal-glass-card {
         background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(15px);
@@ -238,6 +261,41 @@ include_once 'admin_header.php';
             alert('A system error occurred.');
             btn.disabled = false;
             btn.textContent = 'Mark as Contacted';
+        }
+    }
+
+    // Delete Logic
+    async function confirmDelete(id) {
+        if (!confirm('Are you sure you want to delete this inquiry? This action cannot be undone.')) return;
+        
+        const row = document.querySelector(`.crm-row[data-id="${id}"]`);
+        row.style.opacity = '0.5';
+        row.style.pointerEvents = 'none';
+
+        const formData = new FormData();
+        formData.append('id', id);
+
+        try {
+            const response = await fetch('delete_inquiry.php', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+
+            if (result.success) {
+                row.style.transform = 'translateX(50px)';
+                row.style.opacity = '0';
+                setTimeout(() => row.remove(), 300);
+            } else {
+                alert('Delete failed: ' + result.message);
+                row.style.opacity = '1';
+                row.style.pointerEvents = 'auto';
+            }
+        } catch (error) {
+            console.error('AJAX Error:', error);
+            alert('A system error occurred.');
+            row.style.opacity = '1';
+            row.style.pointerEvents = 'auto';
         }
     }
 </script>
