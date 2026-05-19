@@ -1,7 +1,7 @@
 <?php include_once 'header.php'; ?>
 
 <!-- Hero Section -->
-<section id="home" class="hero-bg relative min-h-screen flex items-center justify-center py-28 lg:py-36 pt-32">
+<section id="home" class="hero-bg relative pt-40 pb-28 md:pt-48 md:pb-36 lg:pt-56 lg:pb-40">
     <div class="absolute inset-0 overflow-hidden pointer-events-none">
         <div class="absolute -bottom-20 -left-20 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl"></div>
         <div class="absolute top-20 right-0 w-[400px] h-[400px] bg-accent/5 rounded-full blur-2xl"></div>
