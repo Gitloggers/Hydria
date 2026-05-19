@@ -1,7 +1,7 @@
 <?php include_once 'header.php'; ?>
 
 <!-- Hero Section -->
-<section id="home" class="hero-bg relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+<section id="home" class="hero-bg relative min-h-screen flex items-center justify-center py-28 lg:py-36 pt-32">
     <div class="absolute inset-0 overflow-hidden pointer-events-none">
         <div class="absolute -bottom-20 -left-20 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl"></div>
         <div class="absolute top-20 right-0 w-[400px] h-[400px] bg-accent/5 rounded-full blur-2xl"></div>
@@ -14,7 +14,7 @@
                 <span class="text-white text-xs font-bold uppercase tracking-widest">Trusted Since 2004 · Los Baños, Laguna</span>
             </div>
 
-            <h1 class="font-display text-5xl md:text-7xl lg:text-9xl text-white leading-[0.85] flex flex-col">
+            <h1 class="font-display text-5xl md:text-6xl lg:text-7xl text-white leading-tight flex flex-col gap-2">
                 <span class="reveal reveal-delay-1">BUILDING</span>
                 <span class="text-accent reveal reveal-delay-2">EXCELLENCE</span>
                 <span class="flex items-center gap-4 reveal reveal-delay-3">
@@ -26,7 +26,7 @@
                 Hydria Construction Inc. delivers premium quality <span class="text-white font-bold underline decoration-accent/50 underline-offset-4">residential, commercial, and industrial</span> solutions in Los Baños and beyond.
             </p>
 
-            <div class="flex flex-wrap gap-5 pt-4 reveal reveal-delay-5">
+            <div class="flex flex-wrap gap-5 pt-6 pb-4 reveal reveal-delay-5">
                 <a href="#contact" class="group inline-flex items-center gap-2 px-8 py-4 bg-accent hover:bg-[#B3933B] text-white font-black text-sm rounded-xl transition-all duration-300 shadow-xl shadow-accent/20 hover:shadow-accent/40 hover:scale-105">
                     GET A FREE QUOTE
                     <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>

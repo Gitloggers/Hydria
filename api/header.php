@@ -15,24 +15,7 @@
         href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800;900&display=swap"
         rel="stylesheet">
 
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#0D1B4B',
-                        accent: '#C9A84C',
-                    },
-                    fontFamily: {
-                        display: ['Bebas Neue', 'sans-serif'],
-                        sans: ['Inter', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
+
 
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>

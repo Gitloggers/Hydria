@@ -11,3 +11,9 @@ php_errors.log
 
 # Database Config (KEEP config.php HIDDEN, but allow db.php)
 config.php
+.env
+
+# Dependencies
+node_modules/
+package-lock.json
+

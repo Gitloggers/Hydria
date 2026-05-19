@@ -72,7 +72,8 @@ try {
 </div>
 
 <div class="dashboard-grid">
-    <!-- Trend & Recent Inquiries -->
+    <!-- Left Column: Trend & Recent Inquiries -->
+    <div>
         <h2 style="margin: 0 0 1.5rem 0; font-weight: 800; letter-spacing: -1px; display: flex; align-items: center; gap: 1rem;" data-aos="fade-right">
             <span>📈</span> Inquiry Trends (7 Days)
         </h2>
@@ -121,7 +122,7 @@ try {
         </div>
     </div>
 
-    <!-- Activity Pulse -->
+    <!-- Right Column: Activity Pulse -->
     <div>
         <h2 style="margin: 0 0 1.5rem 0; font-weight: 800; letter-spacing: -0.5px;" data-aos="fade-left">Activity Pulse</h2>
         <div class="table-card" style="padding: 1rem; background: #fff;" data-aos="fade-left" data-aos-delay="100">
@@ -147,6 +148,7 @@ try {
         </div>
     </div>
 </div>
+
 
 <script>
     // 1. Chart.js Implementation

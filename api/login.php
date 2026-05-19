@@ -1,9 +1,22 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 require_once 'db.php';
 
-// Redirect if already logged in
+// Redirect if already logged in (via session or cookie)
+$is_logged_in = false;
 if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true) {
+    $is_logged_in = true;
+} elseif (isset($_COOKIE['admin_logged_in']) && $_COOKIE['admin_logged_in'] === 'true') {
+    $is_logged_in = true;
+    $_SESSION['admin_logged_in'] = true;
+    if (isset($_COOKIE['admin_id'])) {
+        $_SESSION['admin_id'] = $_COOKIE['admin_id'];
+    }
+}
+
+if ($is_logged_in) {
     header('Location: admin_dashboard.php');
     exit;
 }
@@ -28,6 +41,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['admin_logged_in'] = true;
                 $_SESSION['admin_id'] = $admin['id'];
                 
+                // Set secure HTTP-only cookies for serverless Vercel compatibility
+                $is_secure = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on';
+                setcookie('admin_logged_in', 'true', [
+                    'expires' => time() + 86400 * 7, // 7 days
+                    'path' => '/',
+                    'secure' => $is_secure,
+                    'httponly' => true,
+                    'samesite' => 'Lax'
+                ]);
+                setcookie('admin_id', $admin['id'], [
+                    'expires' => time() + 86400 * 7,
+                    'path' => '/',
+                    'secure' => $is_secure,
+                    'httponly' => true,
+                    'samesite' => 'Lax'
+                ]);
+
                 // Log the successful login
                 $logStmt = $pdo->prepare("INSERT INTO activity_logs (action) VALUES (?)");
                 $logStmt->execute(["Admin '$username' logged in successfully."]);
