@@ -94,7 +94,7 @@ body {
 .hero-bg {
   background-image: 
     linear-gradient(to right, rgba(13, 27, 75, 0.95) 0%, rgba(13, 27, 75, 0.8) 50%, rgba(13, 27, 75, 0.4) 100%),
-    url('assets/modern_hero.png');
+    url('assets/hero.png');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;

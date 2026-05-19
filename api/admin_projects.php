@@ -40,20 +40,22 @@ if (isset($_POST['add_project'])) {
 
     $title = trim($_POST['title'] ?? '');
     $category = trim($_POST['category'] ?? '');
-    $image_url = '';
-
-    if (!empty($_FILES['image']['name'])) {
+    // Check if an external image URL was provided
+    $external_url = trim($_POST['image_url_input'] ?? '');
+    if (!empty($external_url)) {
+        $image_url = $external_url;
+    } elseif (!empty($_FILES['image']['name'])) {
         $source_file = $_FILES['image']['tmp_name'];
         $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
         $allowed = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
 
         if (in_array($ext, $allowed)) {
-            $target_dir = "assets/";
-            if (!file_exists($target_dir)) {
-                mkdir($target_dir, 0777, true);
+            $disk_target_dir = dirname(__DIR__) . '/assets/';
+            if (!file_exists($disk_target_dir)) {
+                mkdir($disk_target_dir, 0777, true);
             }
             $new_filename = uniqid('proj_') . '.' . $ext;
-            $target_file = $target_dir . $new_filename;
+            $target_file = $disk_target_dir . $new_filename;
 
             if (function_exists('imagecreatetruecolor')) {
                 $img_info = getimagesize($source_file);
@@ -99,13 +101,13 @@ if (isset($_POST['add_project'])) {
                         }
                         imagedestroy($image_p);
                         imagedestroy($image);
-                        if ($success) $image_url = $target_file;
+                        if ($success) $image_url = 'assets/' . $new_filename;
                     }
                 }
             } else {
                 // Fallback for environments without GD extension (like Vercel)
                 if (move_uploaded_file($source_file, $target_file)) {
-                    $image_url = $target_file;
+                    $image_url = 'assets/' . $new_filename;
                 }
             }
         }
@@ -265,8 +267,13 @@ include_once 'admin_header.php';
             </div>
 
             <div class="form-group">
-                <label>Project Image</label>
+                <label>Project Image (Upload)</label>
                 <input type="file" name="image" class="form-control-next">
+            </div>
+
+            <div class="form-group">
+                <label>Or Image URL (Required on Vercel)</label>
+                <input type="url" name="image_url_input" class="form-control-next" placeholder="https://example.com/image.jpg">
             </div>
 
             <button type="submit" name="add_project" class="btn-magnetic">Upload to Gallery</button>
