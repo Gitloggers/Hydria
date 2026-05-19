@@ -269,6 +269,9 @@ include_once 'admin_header.php';
             <div class="form-group">
                 <label>Project Image (Upload)</label>
                 <input type="file" name="image" class="form-control-next">
+                <div style="font-size: 0.7rem; color: #E11D48; font-weight: 700; margin-top: 0.5rem; line-height: 1.2;">
+                    ⚠️ Note: File uploads require a writeable disk (Localhost / Render). On Vercel, please use the Image URL input below.
+                </div>
             </div>
 
             <div class="form-group">
