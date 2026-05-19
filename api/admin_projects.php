@@ -48,53 +48,64 @@ if (isset($_POST['add_project'])) {
         $allowed = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
 
         if (in_array($ext, $allowed)) {
-            $img_info = getimagesize($source_file);
-            if ($img_info !== false) {
-                $width = $img_info[0];
-                $height = $img_info[1];
-                $mime = $img_info['mime'];
-                
-                $max_width = 1200;
-                if ($width > $max_width) {
-                    $new_width = $max_width;
-                    $new_height = floor($height * ($max_width / $width));
-                } else {
-                    $new_width = $width;
-                    $new_height = $height;
-                }
-                
-                $image_p = imagecreatetruecolor($new_width, $new_height);
-                if ($ext == 'png' || $ext == 'webp') {
-                    imagealphablending($image_p, false);
-                    imagesavealpha($image_p, true);
-                    $transparent = imagecolorallocatealpha($image_p, 255, 255, 255, 127);
-                    imagefilledrectangle($image_p, 0, 0, $new_width, $new_height, $transparent);
-                }
-                
-                switch($mime) {
-                    case 'image/jpeg': $image = imagecreatefromjpeg($source_file); break;
-                    case 'image/png': $image = imagecreatefrompng($source_file); break;
-                    case 'image/gif': $image = imagecreatefromgif($source_file); break;
-                    case 'image/webp': $image = imagecreatefromwebp($source_file); break;
-                    default: $image = false;
-                }
-                
-                if ($image !== false) {
-                    imagecopyresampled($image_p, $image, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
-                    $target_dir = "assets/";
-                    $new_filename = uniqid('proj_') . '.' . $ext;
-                    $target_file = $target_dir . $new_filename;
+            $target_dir = "assets/";
+            if (!file_exists($target_dir)) {
+                mkdir($target_dir, 0777, true);
+            }
+            $new_filename = uniqid('proj_') . '.' . $ext;
+            $target_file = $target_dir . $new_filename;
+
+            if (function_exists('imagecreatetruecolor')) {
+                $img_info = getimagesize($source_file);
+                if ($img_info !== false) {
+                    $width = $img_info[0];
+                    $height = $img_info[1];
+                    $mime = $img_info['mime'];
                     
-                    $success = false;
-                    switch($mime) {
-                        case 'image/jpeg': $success = imagejpeg($image_p, $target_file, 85); break;
-                        case 'image/png': $success = imagepng($image_p, $target_file, 8); break;
-                        case 'image/gif': $success = imagegif($image_p, $target_file); break;
-                        case 'image/webp': $success = imagewebp($image_p, $target_file, 85); break;
+                    $max_width = 1200;
+                    if ($width > $max_width) {
+                        $new_width = $max_width;
+                        $new_height = floor($height * ($max_width / $width));
+                    } else {
+                        $new_width = $width;
+                        $new_height = $height;
                     }
-                    imagedestroy($image_p);
-                    imagedestroy($image);
-                    if ($success) $image_url = $target_file;
+                    
+                    $image_p = imagecreatetruecolor($new_width, $new_height);
+                    if ($ext == 'png' || $ext == 'webp') {
+                        imagealphablending($image_p, false);
+                        imagesavealpha($image_p, true);
+                        $transparent = imagecolorallocatealpha($image_p, 255, 255, 255, 127);
+                        imagefilledrectangle($image_p, 0, 0, $new_width, $new_height, $transparent);
+                    }
+                    
+                    switch($mime) {
+                        case 'image/jpeg': $image = imagecreatefromjpeg($source_file); break;
+                        case 'image/png': $image = imagecreatefrompng($source_file); break;
+                        case 'image/gif': $image = imagecreatefromgif($source_file); break;
+                        case 'image/webp': $image = imagecreatefromwebp($source_file); break;
+                        default: $image = false;
+                    }
+                    
+                    if ($image !== false) {
+                        imagecopyresampled($image_p, $image, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
+                        
+                        $success = false;
+                        switch($mime) {
+                            case 'image/jpeg': $success = imagejpeg($image_p, $target_file, 85); break;
+                            case 'image/png': $success = imagepng($image_p, $target_file, 8); break;
+                            case 'image/gif': $success = imagegif($image_p, $target_file); break;
+                            case 'image/webp': $success = imagewebp($image_p, $target_file, 85); break;
+                        }
+                        imagedestroy($image_p);
+                        imagedestroy($image);
+                        if ($success) $image_url = $target_file;
+                    }
+                }
+            } else {
+                // Fallback for environments without GD extension (like Vercel)
+                if (move_uploaded_file($source_file, $target_file)) {
+                    $image_url = $target_file;
                 }
             }
         }
