@@ -1,6 +1,6 @@
-@import "tailwindcss";
-@source "./api/**/*.php";
-@source "./*.php";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* Custom Modern UI Styles */
 :root {

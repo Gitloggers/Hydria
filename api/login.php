@@ -2,6 +2,12 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+$base_path = '';
+if (file_exists('modern-ui.css')) {
+    $base_path = '';
+} else if (file_exists('../modern-ui.css')) {
+    $base_path = '../';
+}
 require_once 'db.php';
 
 // Redirect if already logged in (via session or cookie)
@@ -206,7 +212,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <div class="login-card">
         <div class="logo-wrapper">
-            <img src="assets/logo.png" alt="Hydria Logo">
+            <img src="<?php echo $base_path; ?>assets/logo.png" alt="Hydria Logo">
             <div class="login-title">Admin Dashboard</div>
             <div class="login-subtitle">Please enter your credentials to continue.</div>
         </div>

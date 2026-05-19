@@ -1,5 +1,11 @@
 <?php
 require_once 'check_auth.php';
+$base_path = '';
+if (file_exists('modern-ui.css')) {
+    $base_path = '';
+} else if (file_exists('../modern-ui.css')) {
+    $base_path = '../';
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -197,7 +203,7 @@ require_once 'check_auth.php';
         <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
         <aside class="sidebar">
             <div class="sidebar-header">
-                <img src="assets/logo.png" alt="Logo">
+                <img src="<?php echo $base_path; ?>assets/logo.png" alt="Logo">
                 <span class="sidebar-title">HYDRIA</span>
             </div>
             <nav class="sidebar-nav">

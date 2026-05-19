@@ -64,7 +64,7 @@
         <div class="grid lg:grid-cols-2 gap-20 items-center">
             <div class="relative reveal">
                 <div class="aspect-[4/5] rounded-[2rem] overflow-hidden shadow-2xl">
-                    <img src="assets/highlight.jpg" alt="Construction Quality" class="w-full h-full object-cover">
+                    <img src="<?php echo isset($base_path) ? $base_path : ''; ?>assets/highlight.jpg" alt="Construction Quality" class="w-full h-full object-cover">
                 </div>
                 <div class="absolute -bottom-6 -right-6 md:-bottom-10 md:-right-10 bg-primary p-6 md:p-10 rounded-[1.5rem] md:rounded-[2rem] shadow-2xl border-4 border-white">
                     <div class="text-center">
@@ -418,6 +418,9 @@
                         $title = htmlspecialchars($row['title'] ?? 'Project Title');
                         $category = htmlspecialchars($row['category'] ?? 'Category');
                         $image_url = htmlspecialchars($row['image_url'] ?? 'assets/villa.png');
+                        if (strpos($image_url, 'assets/') === 0) {
+                            $image_url = (isset($base_path) ? $base_path : '') . $image_url;
+                        }
                         
                         echo "
                         <div class=\"reveal reveal-delay-1 group relative overflow-hidden rounded-[2rem] bg-slate-100 aspect-[4/5] shadow-lg hover:shadow-2xl transition-all duration-500\">
@@ -483,7 +486,7 @@
 
             <div class="relative">
                 <div class="aspect-square rounded-full border-[32px] border-white shadow-2xl overflow-hidden relative z-10">
-                    <img src="assets/hero.png" alt="Modern Building" class="w-full h-full object-cover">
+                    <img src="<?php echo isset($base_path) ? $base_path : ''; ?>assets/hero.png" alt="Modern Building" class="w-full h-full object-cover">
                 </div>
                 <div class="absolute -top-10 -left-10 w-40 h-40 bg-accent rounded-full blur-3xl opacity-20 animate-pulse"></div>
                 <div class="absolute -bottom-10 -right-10 w-60 h-60 bg-primary rounded-full blur-3xl opacity-10"></div>

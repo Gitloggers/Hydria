@@ -1,3 +1,11 @@
+<?php
+$base_path = '';
+if (file_exists('modern-ui.css')) {
+    $base_path = '';
+} else if (file_exists('../modern-ui.css')) {
+    $base_path = '../';
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,7 +28,7 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <link rel="stylesheet" href="modern-ui.css">
+    <link rel="stylesheet" href="<?php echo $base_path; ?>modern-ui.css?v=2.0">
 </head>
 
 <body class="bg-white">
@@ -30,7 +38,7 @@
         <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
             <!-- Logo -->
             <a href="#home" class="flex items-center gap-3 group">
-                <img src="assets/logo.png" alt="Hydria Logo" class="h-10 w-auto transition-transform group-hover:scale-110">
+                <img src="<?php echo $base_path; ?>assets/logo.png" alt="Hydria Logo" class="h-10 w-auto transition-transform group-hover:scale-110">
                 <span class="font-display text-2xl tracking-wider text-primary uppercase">HYDRIA</span>
             </a>
 

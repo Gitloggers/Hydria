@@ -3,7 +3,7 @@
     <div class="max-w-7xl mx-auto px-6">
         <div class="bg-primary rounded-[3rem] overflow-hidden shadow-2xl relative">
             <div class="absolute top-0 right-0 w-1/2 h-full hidden lg:block">
-                <img src="assets/school.jpg" alt="Contact Us" class="w-full h-full object-cover opacity-50">
+                <img src="<?php echo isset($base_path) ? $base_path : ''; ?>assets/school.jpg" alt="Contact Us" class="w-full h-full object-cover opacity-50">
                 <div class="absolute inset-0 bg-gradient-to-r from-primary to-transparent"></div>
             </div>
 
@@ -56,7 +56,7 @@
                 } catch (PDOException $e) {}
                 ?>
                 <a href="#home" class="flex items-center gap-3 mb-8 group">
-                    <img src="assets/logo.png" alt="Hydria Logo" class="h-12 w-auto transition-transform group-hover:scale-110">
+                    <img src="<?php echo isset($base_path) ? $base_path : ''; ?>assets/logo.png" alt="Hydria Logo" class="h-12 w-auto transition-transform group-hover:scale-110">
                     <span class="font-display text-3xl tracking-wider text-primary uppercase">HYDRIA</span>
                 </a>
                 <p class="text-slate-500 text-lg leading-relaxed max-w-md">
