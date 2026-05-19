@@ -12,16 +12,21 @@ RUN apt-get update && apt-get install -y \
 # Enable Apache Mod_Rewrite
 RUN a2enmod rewrite
 
-# Copy website files
+# Allow .htaccess overrides and enable rewrites in the web root
+RUN sed -i '/<Directory \/var\/www\/html\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' \
+    /etc/apache2/apache2.conf
+
+# Copy website files to document root
 COPY . /var/www/html/
 
-# Create assets directory if it doesn't exist and set permissions
+# Create assets directory and set permissions
 RUN mkdir -p /var/www/html/assets && \
     chown -R www-data:www-data /var/www/html/ && \
     chmod -R 755 /var/www/html/assets
 
-# Update Apache to listen on Render's dynamic port
-RUN sed -i 's/80/${PORT}/g' /etc/apache2/sites-available/000-default.conf /etc/apache2/ports.conf
+# Copy and prepare the entrypoint script
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-# Start Apache
-CMD ["apache2-foreground"]
+# Port replacement happens at runtime via entrypoint (Render sets $PORT dynamically)
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
