@@ -39,20 +39,24 @@ include_once 'admin_header.php';
                 if ($stmt->rowCount() > 0) {
                     while ($row = $stmt->fetch()) {
                         $date = date('M j, Y', strtotime($row['created_at']));
-                        $isPending = $row['status'] == 'Pending';
+                        $status = $row['status'] ?? 'Pending';
+                        $isPending = $status == 'Pending';
                         $statusClass = $isPending ? 'status-pending' : 'status-contacted';
                         $statusIcon = $isPending ? '⏳' : '✅';
                         $rowStyle = $isPending ? 'border-left: 4px solid var(--secondary);' : '';
                         
+                        // Merge status back so json_encode for the modal is also accurate
+                        $row['status'] = $status;
+
                         echo "<tr style='$rowStyle' class='crm-row' data-id='" . $row['id'] . "'>";
                         echo "<td>
-                            <span class='status-pill $statusClass'>$statusIcon <span class='status-text'>" . $row['status'] . "</span></span>
+                            <span class='status-pill $statusClass'>$statusIcon <span class='status-text'>$status</span></span>
                         </td>";
                         echo "<td>
                             <div style='font-weight: 800; color: var(--primary);'>" . htmlspecialchars($row['name']) . "</div>
                             <div style='font-size: 0.8125rem; color: var(--text-muted);'>" . htmlspecialchars($row['email']) . "</div>
                         </td>";
-                        echo "<td><span style='background: #F1F5F9; padding: 0.4rem 0.8rem; border-radius: 0.75rem; font-size: 0.75rem; font-weight: 700; color: var(--primary);'>" . htmlspecialchars($row['service']) . "</span></td>";
+                        echo "<td><span style='background: #F1F5F9; padding: 0.4rem 0.8rem; border-radius: 0.75rem; font-size: 0.75rem; font-weight: 700; color: var(--primary);'>" . htmlspecialchars($row['service'] ?? '') . "</span></td>";
                         echo "<td><div style='font-size: 0.875rem;'>$date</div></td>";
                         echo "<td style='text-align: right;'>
                             <div style='display: flex; justify-content: flex-end; gap: 0.5rem;'>
