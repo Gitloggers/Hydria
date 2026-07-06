@@ -3,7 +3,8 @@
     <div class="max-w-7xl mx-auto px-6">
         <div class="bg-primary rounded-[3rem] overflow-hidden shadow-2xl relative">
             <div class="absolute top-0 right-0 w-1/2 h-full hidden lg:block">
-                <img src="<?php echo isset($base_path) ? $base_path : ''; ?>assets/school.jpg" alt="Contact Us" class="w-full h-full object-cover opacity-50">
+                <img src="<?php echo isset($base_path) ? $base_path : ''; ?>assets/school.jpg" alt="Contact Us"
+                    class="w-full h-full object-cover opacity-50">
                 <div class="absolute inset-0 bg-gradient-to-r from-primary to-transparent"></div>
             </div>
 
@@ -11,26 +12,33 @@
                 <div class="space-y-4 mb-10">
                     <h2 class="text-accent font-black text-sm uppercase tracking-[0.3em]">GET IN TOUCH</h2>
                     <h3 class="text-white text-5xl font-display">LET'S BUILD SOMETHING GREAT</h3>
-                    <p class="text-white/60">Ready to start your project? Send us a message and our expert team will get back to you within 24 hours.</p>
+                    <p class="text-white/60">Ready to start your project? Send us a message and our expert team will get
+                        back to you within 24 hours.</p>
                 </div>
 
                 <form id="contactForm" class="space-y-4">
                     <div class="grid md:grid-cols-2 gap-4">
-                        <input type="text" id="name" placeholder="Full Name" required class="w-full px-6 py-4 bg-white/5 border border-white/10 rounded-2xl text-white placeholder:text-white/30 focus:outline-none focus:border-accent transition-colors">
-                        <input type="email" id="email" placeholder="Email Address" required class="w-full px-6 py-4 bg-white/5 border border-white/10 rounded-2xl text-white placeholder:text-white/30 focus:outline-none focus:border-accent transition-colors">
+                        <input type="text" id="name" placeholder="Full Name" required
+                            class="w-full px-6 py-4 bg-white/5 border border-white/10 rounded-2xl text-white placeholder:text-white/30 focus:outline-none focus:border-accent transition-colors">
+                        <input type="email" id="email" placeholder="Email Address" required
+                            class="w-full px-6 py-4 bg-white/5 border border-white/10 rounded-2xl text-white placeholder:text-white/30 focus:outline-none focus:border-accent transition-colors">
                     </div>
-                    <select id="service" required class="w-full px-6 py-4 bg-white/5 border border-white/10 rounded-2xl text-white focus:outline-none focus:border-accent transition-colors appearance-none">
+                    <select id="service" required
+                        class="w-full px-6 py-4 bg-white/5 border border-white/10 rounded-2xl text-white focus:outline-none focus:border-accent transition-colors appearance-none">
                         <option value="" disabled selected class="bg-primary">Service Interested In</option>
                         <option value="residential" class="bg-primary">Residential</option>
                         <option value="commercial" class="bg-primary">Commercial</option>
                         <option value="industrial" class="bg-primary">Industrial</option>
                         <option value="other" class="bg-primary">Other</option>
                     </select>
-                    <textarea id="message" placeholder="Tell us about your project..." rows="4" required class="w-full px-6 py-4 bg-white/5 border border-white/10 rounded-2xl text-white placeholder:text-white/30 focus:outline-none focus:border-accent transition-colors"></textarea>
-                    
-                    <button type="submit" class="w-full py-5 bg-accent hover:bg-[#B3933B] text-white font-black rounded-2xl transition-all shadow-xl shadow-accent/20 flex items-center justify-center gap-3 group">
+                    <textarea id="message" placeholder="Tell us about your project..." rows="4" required
+                        class="w-full px-6 py-4 bg-white/5 border border-white/10 rounded-2xl text-white placeholder:text-white/30 focus:outline-none focus:border-accent transition-colors"></textarea>
+
+                    <button type="submit"
+                        class="w-full py-5 bg-accent hover:bg-[#B3933B] text-white font-black rounded-2xl transition-all shadow-xl shadow-accent/20 flex items-center justify-center gap-3 group">
                         SUBMIT INQUIRY
-                        <i data-lucide="send" class="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
+                        <i data-lucide="send"
+                            class="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
                     </button>
                     <div id="formStatus" class="text-center text-sm font-bold mt-4"></div>
                 </form>
@@ -45,29 +53,35 @@
         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-20">
             <div class="lg:col-span-2 space-y-8">
                 <a href="#home" class="flex items-center gap-3">
-                <?php
-                $settings = [];
-                try {
-                    require_once 'db.php';
-                    $stmt = $pdo->query("SELECT s_key, s_value FROM settings");
-                    while ($row = $stmt->fetch()) {
-                        $settings[$row['s_key']] = $row['s_value'];
+                    <?php
+                    $settings = [];
+                    try {
+                        require_once 'db.php';
+                        $stmt = $pdo->query("SELECT s_key, s_value FROM settings");
+                        while ($row = $stmt->fetch()) {
+                            $settings[$row['s_key']] = $row['s_value'];
+                        }
+                    } catch (PDOException $e) {
                     }
-                } catch (PDOException $e) {}
-                ?>
-                <a href="#home" class="flex items-center gap-3 mb-8 group">
-                    <img src="<?php echo isset($base_path) ? $base_path : ''; ?>assets/logo.png" alt="Hydria Logo" class="h-12 w-auto transition-transform group-hover:scale-110">
-                    <span class="font-display text-3xl tracking-wider text-primary uppercase">HYDRIA</span>
-                </a>
-                <p class="text-slate-500 text-lg leading-relaxed max-w-md">
-                    <?= htmlspecialchars($settings['footer_desc'] ?? 'Building excellence for over 20 years. Let\'s discuss your next project.') ?>
-                </p>
-                <div class="flex items-center gap-4">
-                    <a href="https://www.facebook.com/hydriaconstruction" target="_blank" class="px-6 py-4 bg-white border border-slate-200 rounded-2xl flex items-center gap-4 text-primary hover:bg-primary hover:text-white transition-all shadow-md hover:shadow-xl hover:-translate-y-1 group">
-                        <i data-lucide="facebook" class="w-7 h-7"></i>
-                        <span class="font-black text-sm uppercase tracking-wider">Follow us on Facebook</span>
+                    ?>
+                    <a href="#home" class="flex items-center gap-3 mb-8 group">
+                        <img src="<?php echo isset($base_path) ? $base_path : ''; ?>assets/logo.png" alt="Hydria Logo"
+                            class="h-12 w-auto transition-transform group-hover:scale-110">
+                        <span class="font-display text-3xl tracking-wider text-primary uppercase">HYDRIA</span>
                     </a>
-                </div>
+                    <p class="text-slate-500 text-lg leading-relaxed max-w-md">
+                        <?= htmlspecialchars($settings['footer_desc'] ?? 'Building excellence for over 20 years. Let\'s discuss your next project.') ?>
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <a href="https://www.facebook.com/hydriaconstruction" target="_blank"
+                            class="px-6 py-4 bg-white border border-slate-200 rounded-2xl flex items-center gap-4 text-primary hover:bg-primary hover:text-white transition-all shadow-md hover:shadow-xl hover:-translate-y-1 group">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-7 h-7 flex-shrink-0">
+                                <circle cx="256" cy="256" r="256" fill="#1877F2"/>
+                                <path fill="#fff" d="M354.2 330.3l12.4-80.3h-77.1v-52.1c0-22 10.8-43.4 45.4-43.4h35.1V165s-31.9-5.4-62.4-5.4c-63.7 0-105.3 38.6-105.3 108.5V250H138v80.3h64.3V512a257.5 257.5 0 0 0 79.4 0V330.3h72.5z"/>
+                            </svg>
+                            <span class="font-black text-sm uppercase tracking-wider">Follow us on Facebook</span>
+                        </a>
+                    </div>
             </div>
 
             <div class="space-y-6">
@@ -93,8 +107,10 @@
                 <ul class="space-y-3">
                     <li><a href="#home" class="text-slate-500 hover:text-primary transition-colors">Home</a></li>
                     <li><a href="#about" class="text-slate-500 hover:text-primary transition-colors">About Us</a></li>
-                    <li><a href="#services" class="text-slate-500 hover:text-primary transition-colors">Our Services</a></li>
-                    <li><a href="#projects" class="text-slate-500 hover:text-primary transition-colors">Work Gallery</a></li>
+                    <li><a href="#services" class="text-slate-500 hover:text-primary transition-colors">Our Services</a>
+                    </li>
+                    <li><a href="#projects" class="text-slate-500 hover:text-primary transition-colors">Work Gallery</a>
+                    </li>
 
                 </ul>
             </div>
@@ -104,7 +120,9 @@
         <div class="max-w-7xl mx-auto px-6 text-center text-white/40 text-xs font-bold uppercase tracking-widest">
             &copy; <?= date('Y') ?> Hydria Construction Inc. All rights reserved.
         </div>
-        <a href="login.php" class="absolute bottom-2 right-4 text-[10px] text-white/5 hover:text-accent transition-colors">Staff Portal</a>
+        <a href="login.php"
+            class="absolute bottom-2 right-4 text-[10px] text-white/5 hover:text-accent transition-colors">Staff
+            Portal</a>
     </div>
 </footer>
 
@@ -136,7 +154,7 @@
         e.preventDefault();
         const status = document.getElementById('formStatus');
         const submitBtn = e.target.querySelector('button[type="submit"]');
-        
+
         status.textContent = 'Sending...';
         status.className = 'text-center text-sm font-bold mt-4 text-white/50';
         submitBtn.disabled = true;
@@ -155,7 +173,7 @@
                 body: JSON.stringify(formData)
             });
             const result = await response.json();
-            
+
             if (result.success) {
                 status.textContent = 'Message sent successfully!';
                 status.className = 'text-center text-sm font-bold mt-4 text-accent';
@@ -189,4 +207,5 @@
     document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 </script>
 </body>
+
 </html>
