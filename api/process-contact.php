@@ -19,7 +19,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo json_encode(['success' => false, 'message' => 'Invalid email address format.']);
+        echo json_encode(['success' => false, 'message' => 'Please enter a valid email address format.']);
+        exit;
+    }
+
+    // DNS MX record check — verifies the email domain can actually receive mail
+    $domain = substr(strrchr($email, '@'), 1);
+    if (!checkdnsrr($domain, 'MX') && !checkdnsrr($domain, 'A')) {
+        echo json_encode(['success' => false, 'message' => "The email domain \"$domain\" does not appear to exist. Please double-check your email address."]);
         exit;
     }
 

@@ -150,11 +150,59 @@
         }
     });
 
+    // Email Real-Time Validation
+    const emailInput = document.getElementById('email');
+    const emailHint = document.createElement('p');
+    emailHint.id = 'emailHint';
+    emailHint.className = 'text-xs font-bold mt-1 transition-all';
+    emailHint.style.display = 'none';
+    emailInput.insertAdjacentElement('afterend', emailHint);
+
+    function validateEmailFormat(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+    }
+
+    emailInput.addEventListener('input', () => {
+        const val = emailInput.value.trim();
+        if (val.length === 0) {
+            emailHint.style.display = 'none';
+            emailInput.style.borderColor = '';
+            return;
+        }
+        if (!validateEmailFormat(val)) {
+            emailHint.textContent = '⚠ Enter a valid email (e.g. you@gmail.com)';
+            emailHint.style.display = 'block';
+            emailHint.style.color = '#f87171';
+            emailInput.style.borderColor = '#f87171';
+        } else {
+            emailHint.textContent = '✓ Looks good!';
+            emailHint.style.display = 'block';
+            emailHint.style.color = '#34d399';
+            emailInput.style.borderColor = '#34d399';
+        }
+    });
+
+    emailInput.addEventListener('blur', () => {
+        if (emailInput.value.trim().length === 0) {
+            emailHint.style.display = 'none';
+            emailInput.style.borderColor = '';
+        }
+    });
+
     // Contact Form Handler
     document.getElementById('contactForm')?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const status = document.getElementById('formStatus');
         const submitBtn = e.target.querySelector('button[type="submit"]');
+
+        // Client-side email format check before hitting server
+        const emailVal = document.getElementById('email').value.trim();
+        if (!validateEmailFormat(emailVal)) {
+            status.textContent = '⚠ Please enter a valid email address.';
+            status.className = 'text-center text-sm font-bold mt-4 text-red-400';
+            document.getElementById('email').focus();
+            return;
+        }
 
         status.textContent = 'Sending...';
         status.className = 'text-center text-sm font-bold mt-4 text-white/50';
@@ -162,7 +210,7 @@
 
         const formData = {
             name: document.getElementById('name').value,
-            email: document.getElementById('email').value,
+            email: emailVal,
             service: document.getElementById('service').value,
             message: document.getElementById('message').value
         };
@@ -179,6 +227,8 @@
                 status.textContent = 'Message sent successfully!';
                 status.className = 'text-center text-sm font-bold mt-4 text-accent';
                 e.target.reset();
+                emailHint.style.display = 'none';
+                emailInput.style.borderColor = '';
             } else {
                 status.textContent = result.message || 'Error sending message.';
                 status.className = 'text-center text-sm font-bold mt-4 text-red-400';
