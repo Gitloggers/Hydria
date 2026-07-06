@@ -162,24 +162,56 @@
         return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
     }
 
+    let emailDebounce;
     emailInput.addEventListener('input', () => {
         const val = emailInput.value.trim();
+        clearTimeout(emailDebounce);
+
         if (val.length === 0) {
             emailHint.style.display = 'none';
             emailInput.style.borderColor = '';
             return;
         }
+
         if (!validateEmailFormat(val)) {
             emailHint.textContent = '⚠ Enter a valid email (e.g. you@gmail.com)';
             emailHint.style.display = 'block';
             emailHint.style.color = '#f87171';
             emailInput.style.borderColor = '#f87171';
-        } else {
-            emailHint.textContent = '✓ Looks good!';
-            emailHint.style.display = 'block';
-            emailHint.style.color = '#34d399';
-            emailInput.style.borderColor = '#34d399';
+            return;
         }
+
+        // Display checking state immediately when format matches
+        emailHint.textContent = '⚡ Verifying domain...';
+        emailHint.style.display = 'block';
+        emailHint.style.color = '#f59e0b'; // amber-500
+        emailInput.style.borderColor = '#f59e0b';
+
+        emailDebounce = setTimeout(async () => {
+            try {
+                const res = await fetch(`validate-email.php?email=${encodeURIComponent(val)}`);
+                const result = await res.json();
+
+                // Check that the user hasn't typed anything else in the meantime
+                if (emailInput.value.trim() !== val) return;
+
+                if (result.valid) {
+                    emailHint.textContent = '✓ Looks good!';
+                    emailHint.style.color = '#34d399';
+                    emailInput.style.borderColor = '#34d399';
+                } else {
+                    emailHint.textContent = `⚠ ${result.message}`;
+                    emailHint.style.color = '#f87171';
+                    emailInput.style.borderColor = '#f87171';
+                }
+            } catch (e) {
+                if (emailInput.value.trim() !== val) return;
+                // Offline or fetch failure fallback
+                emailHint.textContent = '✓ Format looks correct';
+                emailHint.style.color = '#34d399';
+                emailInput.style.borderColor = '#34d399';
+            }
+        }, 600);
     });
 
     emailInput.addEventListener('blur', () => {
