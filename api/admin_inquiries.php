@@ -1,6 +1,11 @@
 <?php
 require_once 'db.php';
 require_once 'check_auth.php';
+
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
 include_once 'admin_header.php';
 ?>
 
@@ -190,6 +195,7 @@ include_once 'admin_header.php';
 
 <script>
     let currentModal;
+    const csrfToken = "<?= $_SESSION['csrf_token'] ?>";
 
     // Search Logic
     document.getElementById('crmSearch').addEventListener('keyup', function() {
@@ -229,6 +235,7 @@ include_once 'admin_header.php';
         const formData = new FormData();
         formData.append('id', id);
         formData.append('status', 'Contacted');
+        formData.append('csrf_token', csrfToken);
 
         try {
             const response = await fetch('update_inquiry_status.php', {
@@ -274,6 +281,7 @@ include_once 'admin_header.php';
 
         const formData = new FormData();
         formData.append('id', id);
+        formData.append('csrf_token', csrfToken);
 
         try {
             const response = await fetch('delete_inquiry.php', {

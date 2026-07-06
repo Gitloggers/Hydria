@@ -2,11 +2,18 @@
 require_once 'db.php';
 require_once 'check_auth.php';
 
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
 $message = '';
 $error = '';
 
 // Handle Settings Update
 if (isset($_POST['update_settings'])) {
+    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        die("CSRF token validation failed.");
+    }
     try {
         $pdo->beginTransaction();
         foreach ($_POST['settings'] as $key => $value) {
@@ -27,6 +34,9 @@ if (isset($_POST['update_settings'])) {
 
 // Handle Password Change
 if (isset($_POST['change_password'])) {
+    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        die("CSRF token validation failed.");
+    }
     $current = $_POST['current_password'];
     $new = $_POST['new_password'];
     $confirm = $_POST['confirm_password'];
@@ -94,6 +104,7 @@ include_once 'admin_header.php';
         <div class="widget-card" style="background: rgba(255,255,255,0.7); backdrop-filter: blur(10px); color: var(--primary); border: 1px solid var(--border); height: 100%;" data-aos="fade-up">
             <h3 style="margin-top: 0; font-weight: 800; letter-spacing: -0.5px;">🏢 Company Information</h3>
             <form method="post" action="">
+                <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                 <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 2rem;">
                     <div style="flex: 1; min-width: 200px;">
                         <label style="display: block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem;">Public Email</label>
@@ -127,6 +138,7 @@ include_once 'admin_header.php';
             <p style="font-size: 0.875rem; color: rgba(255,255,255,0.6); margin-bottom: 2.5rem;">Update your administrative credentials.</p>
             
             <form method="post" action="">
+                <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                 <div style="margin-bottom: 1.5rem;">
                     <label style="display: block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 0.5rem;">Current Password</label>
                     <input type="password" name="current_password" required 

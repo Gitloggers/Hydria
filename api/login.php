@@ -1,7 +1,5 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+require_once 'auth_helpers.php';
 $base_path = '';
 if (file_exists('modern-ui.css')) {
     $base_path = '';
@@ -14,11 +12,12 @@ require_once 'db.php';
 $is_logged_in = false;
 if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true) {
     $is_logged_in = true;
-} elseif (isset($_COOKIE['admin_logged_in']) && $_COOKIE['admin_logged_in'] === 'true') {
-    $is_logged_in = true;
-    $_SESSION['admin_logged_in'] = true;
-    if (isset($_COOKIE['admin_id'])) {
-        $_SESSION['admin_id'] = $_COOKIE['admin_id'];
+} elseif (isset($_COOKIE['admin_session'])) {
+    $admin_id = verify_signed_cookie('admin_session', $_COOKIE['admin_session']);
+    if ($admin_id !== false) {
+        $is_logged_in = true;
+        $_SESSION['admin_logged_in'] = true;
+        $_SESSION['admin_id'] = (int)$admin_id;
     }
 }
 
@@ -49,15 +48,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 
                 // Set secure HTTP-only cookies for serverless Vercel compatibility
                 $is_secure = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on';
-                setcookie('admin_logged_in', 'true', [
-                    'expires' => time() + 86400 * 7, // 7 days
-                    'path' => '/',
-                    'secure' => $is_secure,
-                    'httponly' => true,
-                    'samesite' => 'Lax'
-                ]);
-                setcookie('admin_id', $admin['id'], [
-                    'expires' => time() + 86400 * 7,
+                $expiry = time() + 86400 * 7; // 7 days
+                $cookie_data = generate_signed_cookie('admin_session', $admin['id'], $expiry);
+                setcookie('admin_session', $cookie_data, [
+                    'expires' => $expiry,
                     'path' => '/',
                     'secure' => $is_secure,
                     'httponly' => true,

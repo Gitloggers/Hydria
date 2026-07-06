@@ -25,20 +25,48 @@ class Database
         return self::$instance;
     }
 
+    private function loadEnv()
+    {
+        $envPath = dirname(__DIR__) . '/.env';
+        if (file_exists($envPath)) {
+            $lines = file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+            foreach ($lines as $line) {
+                $line = trim($line);
+                if (empty($line) || strpos($line, '#') === 0) {
+                    continue;
+                }
+                if (strpos($line, '=') !== false) {
+                    list($name, $value) = explode('=', $line, 2);
+                    $name = trim($name);
+                    $value = trim($value);
+                    if (preg_match('/^"(.*)"$/', $value, $matches) || preg_match("/^'(.*)'$/", $value, $matches)) {
+                        $value = $matches[1];
+                    }
+                    if (!array_key_exists($name, $_SERVER) && !array_key_exists($name, $_ENV)) {
+                        putenv("{$name}={$value}");
+                        $_ENV[$name] = $value;
+                        $_SERVER[$name] = $value;
+                    }
+                }
+            }
+        }
+    }
+
     public function __construct()
     {
-        // 1. Check for Cloud Environment (Render/Aiven)
-        $is_cloud = (getenv('DB_HOST') || (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] !== 'localhost' && $_SERVER['HTTP_HOST'] !== '127.0.0.1'));
+        $this->loadEnv();
         
-        if ($is_cloud) {
-            $this->host = getenv('DB_HOST') ?: 'mysql-19503c8f-hydriaweb.c.aivencloud.com';
+        $db_host = getenv('DB_HOST');
+        
+        if ($db_host) {
+            $this->host = $db_host;
             $this->dbname = getenv('DB_NAME') ?: 'defaultdb';
-            $this->username = getenv('DB_USER') ?: 'avnadmin';
-            $this->password = getenv('DB_PASS') ?: 'AVNS_o8-Vhcb-S3jM-FCpdWP';
-            $this->port = getenv('DB_PORT') ?: '14431';
-            $this->ssl_ca = __DIR__ . '/ca.pem';
+            $this->username = getenv('DB_USER') ?: 'root';
+            $this->password = getenv('DB_PASS') ?: '';
+            $this->port = getenv('DB_PORT') ?: '3306';
+            $ca_path = __DIR__ . '/ca.pem';
+            $this->ssl_ca = file_exists($ca_path) ? $ca_path : null;
         } else {
-            // 2. Fallback to Local XAMPP
             $this->host = 'localhost';
             $this->dbname = 'hydria_db';
             $this->username = 'root';

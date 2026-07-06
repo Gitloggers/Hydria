@@ -1,7 +1,5 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+require_once 'auth_helpers.php';
 
 $is_logged_in = false;
 
@@ -9,12 +7,13 @@ $is_logged_in = false;
 if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true) {
     $is_logged_in = true;
 } 
-// 2. Fallback to secure HTTP-only cookie (works on serverless Vercel)
-elseif (isset($_COOKIE['admin_logged_in']) && $_COOKIE['admin_logged_in'] === 'true') {
-    $is_logged_in = true;
-    $_SESSION['admin_logged_in'] = true;
-    if (isset($_COOKIE['admin_id'])) {
-        $_SESSION['admin_id'] = $_COOKIE['admin_id'];
+// 2. Fallback to secure signed HTTP-only cookie (works on serverless Vercel)
+elseif (isset($_COOKIE['admin_session'])) {
+    $admin_id = verify_signed_cookie('admin_session', $_COOKIE['admin_session']);
+    if ($admin_id !== false) {
+        $is_logged_in = true;
+        $_SESSION['admin_logged_in'] = true;
+        $_SESSION['admin_id'] = (int)$admin_id;
     }
 }
 
