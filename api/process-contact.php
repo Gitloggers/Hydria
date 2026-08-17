@@ -34,6 +34,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo json_encode(['success' => false, 'message' => 'Invalid service selected.']);
         exit;
     }
+    $allowed_services = ['residential', 'commercial', 'industrial', 'other'];
+    if (!in_array($service, $allowed_services, true)) {
+        $service = 'other';
+    }
     if (strlen($message) > 2000) {
         echo json_encode(['success' => false, 'message' => 'Message must be under 2000 characters.']);
         exit;
@@ -90,6 +94,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Log activity
         $log_stmt = $pdo->prepare("INSERT INTO activity_logs (action) VALUES (?)");
         $log_stmt->execute(["New Inquiry from: $name"]);
+
+        // Send email notification to company (non-blocking)
+        $to = 'hydriaconstruction@gmail.com';
+        $subject = "New Website Inquiry from $name";
+        $body = "Name: $name\nEmail: $email\nService: $service\nMessage:\n$message";
+        $headers = "From: $email\r\nReply-To: $email\r\n";
+        @mail($to, $subject, $body, $headers);
 
         echo json_encode(['success' => true, 'message' => 'Thank you for your inquiry! We will get back to you soon.']);
     } catch (PDOException $e) {
