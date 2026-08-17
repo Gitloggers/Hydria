@@ -101,7 +101,8 @@ class Database
             return self::$connection;
 
         } catch (PDOException $e) {
-            die("Database connection failed: " . $e->getMessage());
+            error_log('Hydria DB connection failed: ' . $e->getMessage());
+            die("Database connection failed. Please check your configuration.");
         }
     }
 }

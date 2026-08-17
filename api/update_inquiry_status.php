@@ -32,7 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             echo json_encode(['success' => true]);
         } catch (PDOException $e) {
-            echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+            error_log('Hydria update_inquiry_status DB error: ' . $e->getMessage());
+            echo json_encode(['success' => false, 'message' => 'Database error. Please try again later.']);
         }
     } else {
         echo json_encode(['success' => false, 'message' => 'Invalid parameters.']);

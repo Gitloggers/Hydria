@@ -16,9 +16,17 @@ if (isset($_POST['update_settings'])) {
     }
     try {
         $pdo->beginTransaction();
+        $allowed_keys = ['company_email', 'company_phone', 'company_address', 'footer_desc'];
         foreach ($_POST['settings'] as $key => $value) {
+            if (!in_array($key, $allowed_keys)) {
+                continue;
+            }
+            $value = trim($value);
+            if (strlen($value) > 500) {
+                $value = substr($value, 0, 500);
+            }
             $stmt = $pdo->prepare("UPDATE settings SET s_value = ? WHERE s_key = ?");
-            $stmt->execute([trim($value), $key]);
+            $stmt->execute([$value, $key]);
         }
         $pdo->commit();
         
@@ -27,8 +35,9 @@ if (isset($_POST['update_settings'])) {
         
         $message = "Settings updated successfully.";
     } catch (Exception $e) {
+        error_log('Hydria admin_settings update error: ' . $e->getMessage());
         $pdo->rollBack();
-        $error = "Failed to update settings: " . $e->getMessage();
+        $error = "Failed to update settings. Please try again later.";
     }
 }
 
@@ -43,6 +52,10 @@ if (isset($_POST['change_password'])) {
 
     if ($new !== $confirm) {
         $error = "New passwords do not match.";
+    } elseif (strlen($new) < 8) {
+        $error = "Password must be at least 8 characters long.";
+    } elseif (!preg_match('/[A-Z]/', $new) || !preg_match('/[a-z]/', $new) || !preg_match('/[0-9]/', $new)) {
+        $error = "Password must contain uppercase, lowercase, and a number.";
     } else {
         try {
             $stmt = $pdo->prepare("SELECT password_hash FROM admins WHERE id = ?");
@@ -62,7 +75,8 @@ if (isset($_POST['change_password'])) {
                 $error = "Current password incorrect.";
             }
         } catch (PDOException $e) {
-            $error = "Database error: " . $e->getMessage();
+            error_log('Hydria admin_settings password error: ' . $e->getMessage());
+            $error = "Database error. Please try again later.";
         }
     }
 }
@@ -108,23 +122,23 @@ include_once 'admin_header.php';
                 <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 2rem;">
                     <div style="flex: 1; min-width: 200px;">
                         <label style="display: block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem;">Public Email</label>
-                        <input type="email" name="settings[company_email]" value="<?= htmlspecialchars($settings['company_email'] ?? '') ?>" 
+                        <input type="email" name="settings[company_email]" value="<?= htmlspecialchars($settings['company_email'] ?? '') ?>" maxlength="100"
                                style="width: 100%; max-width: 100%; padding: 0.875rem; border-radius: 0.75rem; border: 1px solid var(--border); font-family: inherit;">
                     </div>
                     <div style="flex: 1; min-width: 200px;">
                         <label style="display: block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem;">Contact Phone</label>
-                        <input type="text" name="settings[company_phone]" value="<?= htmlspecialchars($settings['company_phone'] ?? '') ?>" 
+                        <input type="text" name="settings[company_phone]" value="<?= htmlspecialchars($settings['company_phone'] ?? '') ?>" maxlength="20"
                                style="width: 100%; max-width: 100%; padding: 0.875rem; border-radius: 0.75rem; border: 1px solid var(--border); font-family: inherit;">
                     </div>
                 </div>
                 <div style="margin-top: 1.5rem;">
                     <label style="display: block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem;">Office Address</label>
-                    <input type="text" name="settings[company_address]" value="<?= htmlspecialchars($settings['company_address'] ?? '') ?>" 
+                    <input type="text" name="settings[company_address]" value="<?= htmlspecialchars($settings['company_address'] ?? '') ?>" maxlength="255"
                            style="width: 100%; max-width: 100%; padding: 0.875rem; border-radius: 0.75rem; border: 1px solid var(--border); font-family: inherit;">
                 </div>
                 <div style="margin-top: 1.5rem;">
                     <label style="display: block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem;">Footer Description</label>
-                    <textarea name="settings[footer_desc]" rows="3" style="width: 100%; max-width: 100%; padding: 0.875rem; border-radius: 0.75rem; border: 1px solid var(--border); font-family: inherit; resize: none;"><?= htmlspecialchars($settings['footer_desc'] ?? '') ?></textarea>
+                    <textarea name="settings[footer_desc]" rows="3" maxlength="500" style="width: 100%; max-width: 100%; padding: 0.875rem; border-radius: 0.75rem; border: 1px solid var(--border); font-family: inherit; resize: none;"><?= htmlspecialchars($settings['footer_desc'] ?? '') ?></textarea>
                 </div>
                 <button type="submit" name="update_settings" class="btn btn-primary settings-btn" style="margin-top: 2rem; width: 100%; font-weight: 800;">Save System Preferences</button>
             </form>

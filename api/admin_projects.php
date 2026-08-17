@@ -44,15 +44,18 @@ if (isset($_POST['add_project'])) {
     $external_url = trim($_POST['image_url_input'] ?? '');
     if (!empty($external_url)) {
         $image_url = $external_url;
-    } elseif (!empty($_FILES['image']['name'])) {
+    } elseif (!empty($_FILES['image']['name']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
         $source_file = $_FILES['image']['tmp_name'];
         $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
         $allowed = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
+        $max_file_size = 5 * 1024 * 1024;
 
-        if (in_array($ext, $allowed)) {
+        if ($_FILES['image']['size'] > $max_file_size) {
+            $message = "<div class='alert-modern error'>❌ Image must be under 5MB.</div>";
+        } elseif (in_array($ext, $allowed)) {
             $disk_target_dir = dirname(__DIR__) . '/assets/';
             if (!file_exists($disk_target_dir)) {
-                mkdir($disk_target_dir, 0777, true);
+                mkdir($disk_target_dir, 0755, true);
             }
             $new_filename = uniqid('proj_') . '.' . $ext;
             $target_file = $disk_target_dir . $new_filename;
@@ -101,13 +104,24 @@ if (isset($_POST['add_project'])) {
                         }
                         imagedestroy($image_p);
                         imagedestroy($image);
-                        if ($success) $image_url = 'assets/' . $new_filename;
+                        if ($success) {
+                            $image_url = 'assets/' . $new_filename;
+                            chmod($target_file, 0644);
+                        }
                     }
                 }
             } else {
-                // Fallback for environments without GD extension (like Vercel)
-                if (move_uploaded_file($source_file, $target_file)) {
-                    $image_url = 'assets/' . $new_filename;
+                $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                $mime_type = finfo_file($finfo, $source_file);
+                finfo_close($finfo);
+                $allowed_mimes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+                if (in_array($mime_type, $allowed_mimes)) {
+                    if (move_uploaded_file($source_file, $target_file)) {
+                        $image_url = 'assets/' . $new_filename;
+                        chmod($target_file, 0644);
+                    }
+                } else {
+                    $message = "<div class='alert-modern error'>❌ Invalid image format. Only JPG, PNG, GIF, and WebP are allowed.</div>";
                 }
             }
         }
@@ -123,7 +137,8 @@ if (isset($_POST['add_project'])) {
 
             $message = "<div class='alert-modern success'>🚀 Project uploaded successfully!</div>";
         } catch (PDOException $e) {
-            $message = "<div class='alert-modern error'>❌ Database error: " . $e->getMessage() . "</div>";
+            error_log('Hydria admin_projects DB error: ' . $e->getMessage());
+            $message = "<div class='alert-modern error'>❌ System error. Please try again later.</div>";
         }
     }
 }

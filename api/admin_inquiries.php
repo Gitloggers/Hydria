@@ -48,6 +48,8 @@ include_once 'admin_header.php';
                         // Merge status back so json_encode for the modal is also accurate
                         $row['status'] = $status;
 
+                        $row['message'] = htmlspecialchars($row['message'], ENT_QUOTES | ENT_HTML5, 'UTF-8');
+
                         echo "<tr style='$rowStyle' class='crm-row' data-id='" . $row['id'] . "'>";
                         echo "<td>
                             <span class='status-pill $statusClass'>$statusIcon <span class='status-text'>$status</span></span>
@@ -217,7 +219,10 @@ include_once 'admin_header.php';
         document.getElementById('modalName').textContent = data.name;
         document.getElementById('modalEmail').textContent = data.email;
         document.getElementById('modalService').textContent = data.service || 'General Inquiry';
-        document.getElementById('modalMessage').innerHTML = data.message.replace(/\n/g, '<br>');
+        document.getElementById('modalMessage').textContent = data.message;
+        const msgDiv = document.getElementById('modalMessage');
+        msgDiv.textContent = data.message;
+        msgDiv.style.whiteSpace = 'pre-wrap';
         document.getElementById('modalId').value = data.id;
         document.getElementById('replyBtn').href = 'mailto:' + data.email;
         

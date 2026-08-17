@@ -42,9 +42,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $admin = $stmt->fetch();
 
             if ($admin && password_verify($password, $admin['password_hash'])) {
-                // Success! Set session variables
+                session_regenerate_id(true);
                 $_SESSION['admin_logged_in'] = true;
                 $_SESSION['admin_id'] = $admin['id'];
+                $_SESSION['login_time'] = time();
+                $_SESSION['user_agent'] = $_SERVER['HTTP_USER_AGENT'] ?? '';
+                unset($_SESSION['failed_attempts']);
                 
                 // Set secure HTTP-only cookies for serverless Vercel compatibility
                 $is_secure = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on';
@@ -65,10 +68,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 header('Location: admin_dashboard.php');
                 exit;
             } else {
+                $_SESSION['failed_attempts'] = ($_SESSION['failed_attempts'] ?? 0) + 1;
                 $error = 'Invalid username or password.';
             }
         } catch (PDOException $e) {
-            $error = 'System error: ' . $e->getMessage();
+            error_log('Hydria login DB error: ' . $e->getMessage());
+            $error = 'System error. Please try again later.';
         }
     }
 }

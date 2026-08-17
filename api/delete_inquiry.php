@@ -25,7 +25,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo json_encode(['success' => false, 'message' => 'Inquiry not found.']);
             }
         } catch (PDOException $e) {
-            echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
+            error_log('Hydria delete_inquiry DB error: ' . $e->getMessage());
+            echo json_encode(['success' => false, 'message' => 'Database error. Please try again later.']);
         }
     } else {
         echo json_encode(['success' => false, 'message' => 'Invalid ID.']);

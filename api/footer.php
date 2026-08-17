@@ -17,10 +17,11 @@
                 </div>
 
                 <form id="contactForm" class="space-y-4">
+                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '') ?>">
                     <div class="grid md:grid-cols-2 gap-4">
-                        <input type="text" id="name" placeholder="Full Name" required
+                        <input type="text" id="name" placeholder="Full Name" required maxlength="100"
                             class="w-full px-6 py-4 bg-white/5 border border-white/10 rounded-2xl text-white placeholder:text-white/30 focus:outline-none focus:border-accent transition-colors">
-                        <input type="email" id="email" placeholder="Email Address" required
+                        <input type="email" id="email" placeholder="Email Address" required maxlength="100"
                             class="w-full px-6 py-4 bg-white/5 border border-white/10 rounded-2xl text-white placeholder:text-white/30 focus:outline-none focus:border-accent transition-colors">
                     </div>
                     <select id="service" required
@@ -31,7 +32,7 @@
                         <option value="industrial" class="bg-primary">Industrial</option>
                         <option value="other" class="bg-primary">Other</option>
                     </select>
-                    <textarea id="message" placeholder="Tell us about your project..." rows="4" required
+                    <textarea id="message" placeholder="Tell us about your project..." rows="4" required maxlength="2000"
                         class="w-full px-6 py-4 bg-white/5 border border-white/10 rounded-2xl text-white placeholder:text-white/30 focus:outline-none focus:border-accent transition-colors"></textarea>
 
                     <button type="submit"
@@ -244,7 +245,8 @@
             name: document.getElementById('name').value,
             email: emailVal,
             service: document.getElementById('service').value,
-            message: document.getElementById('message').value
+            message: document.getElementById('message').value,
+            csrf_token: document.querySelector('input[name="csrf_token"]').value
         };
 
         try {

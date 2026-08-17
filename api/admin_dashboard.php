@@ -216,15 +216,21 @@ try {
 
     // 2. Live Weather (Open-Meteo)
     async function fetchWeather() {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 5000);
         try {
-            const response = await fetch('https://api.open-meteo.com/v1/forecast?latitude=14.1675&longitude=121.2433&current_weather=true');
+            const response = await fetch('https://api.open-meteo.com/v1/forecast?latitude=14.1675&longitude=121.2433&current_weather=true', { signal: controller.signal });
+            clearTimeout(timeout);
+            if (!response.ok) throw new Error('Weather service unavailable');
             const data = await response.json();
             const weather = data.current_weather;
             
             document.getElementById('weather-location').textContent = 'Los Baños, Laguna';
             document.getElementById('weather-temp').innerHTML = `Site: ${getWeatherDesc(weather.weathercode)} • ${Math.round(weather.temperature)}°C`;
         } catch (e) {
+            clearTimeout(timeout);
             document.getElementById('weather-location').textContent = 'Weather Unavailable';
+            document.getElementById('weather-temp').textContent = '';
         }
     }
 
