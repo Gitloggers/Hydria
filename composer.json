@@ -3,6 +3,15 @@
     "description": "Hydria Construction Next-Gen Platform",
     "type": "project",
     "require": {
-        "php": "^8.1"
+        "php": "^8.1",
+        "ext-pdo": "*",
+        "ext-pdo_mysql": "*",
+        "ext-gd": "*",
+        "ext-json": "*"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
     }
 }

@@ -3,37 +3,36 @@
     <div class="max-w-7xl mx-auto px-6 pb-20">
         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-20">
             <div class="lg:col-span-2 space-y-8">
-                <a href="#home" class="flex items-center gap-3">
-                    <?php
-                    $settings = [];
-                    try {
-                        require_once 'db.php';
-                        $stmt = $pdo->query("SELECT s_key, s_value FROM settings");
-                        while ($row = $stmt->fetch()) {
-                            $settings[$row['s_key']] = $row['s_value'];
-                        }
-                    } catch (PDOException $e) {
+                <?php
+                $settings = [];
+                try {
+                    require_once 'db.php';
+                    $stmt = $pdo->query("SELECT s_key, s_value FROM settings");
+                    while ($row = $stmt->fetch()) {
+                        $settings[$row['s_key']] = $row['s_value'];
                     }
-                    ?>
-                    <a href="#home" class="flex items-center gap-3 mb-8 group">
-                        <img src="<?php echo isset($base_path) ? $base_path : ''; ?>assets/logo.png" alt="Hydria Logo"
-                            class="h-12 w-auto transition-transform group-hover:scale-110">
-                        <span class="font-display text-3xl tracking-wider text-primary uppercase">HYDRIA</span>
+                } catch (PDOException $e) {
+                }
+                ?>
+                <a href="#home" class="flex items-center gap-3 mb-8 group">
+                    <img src="<?php echo isset($base_path) ? $base_path : ''; ?>assets/logo.png" alt="Hydria Logo"
+                        class="h-12 w-auto transition-transform group-hover:scale-110">
+                    <span class="font-display text-3xl tracking-wider text-primary uppercase">HYDRIA</span>
+                </a>
+                <p class="text-slate-500 text-lg leading-relaxed max-w-md">
+                    <?= htmlspecialchars($settings['footer_desc'] ?? 'Building excellence for over 20 years. Let\'s discuss your next project.') ?>
+                </p>
+                <div class="flex items-center gap-4">
+                    <a href="https://www.facebook.com/hydriaconstruction" target="_blank"
+                        class="px-6 py-4 bg-white border border-slate-200 rounded-2xl flex items-center gap-4 text-primary hover:bg-primary hover:text-white transition-all shadow-md hover:shadow-xl hover:-translate-y-1 group">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-7 h-7 flex-shrink-0">
+                            <circle cx="12" cy="12" r="12" fill="#1877F2" />
+                            <path fill="#fff"
+                                d="M13.397 20.997v-8.196h2.765l.411-3.209h-3.176V7.548c0-.926.258-1.56 1.587-1.56h1.684V3.127A22.336 22.336 0 0 0 14.201 3c-2.444 0-4.122 1.492-4.122 4.231v2.355H7.332v3.209h2.753v8.202h3.312z" />
+                        </svg>
+                        <span class="font-black text-sm uppercase tracking-wider">Follow us on Facebook</span>
                     </a>
-                    <p class="text-slate-500 text-lg leading-relaxed max-w-md">
-                        <?= htmlspecialchars($settings['footer_desc'] ?? 'Building excellence for over 20 years. Let\'s discuss your next project.') ?>
-                    </p>
-                    <div class="flex items-center gap-4">
-                        <a href="https://www.facebook.com/hydriaconstruction" target="_blank"
-                            class="px-6 py-4 bg-white border border-slate-200 rounded-2xl flex items-center gap-4 text-primary hover:bg-primary hover:text-white transition-all shadow-md hover:shadow-xl hover:-translate-y-1 group">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-7 h-7 flex-shrink-0">
-                                <circle cx="12" cy="12" r="12" fill="#1877F2" />
-                                <path fill="#fff"
-                                    d="M13.397 20.997v-8.196h2.765l.411-3.209h-3.176V7.548c0-.926.258-1.56 1.587-1.56h1.684V3.127A22.336 22.336 0 0 0 14.201 3c-2.444 0-4.122 1.492-4.122 4.231v2.355H7.332v3.209h2.753v8.202h3.312z" />
-                            </svg>
-                            <span class="font-black text-sm uppercase tracking-wider">Follow us on Facebook</span>
-                        </a>
-                    </div>
+                </div>
             </div>
 
             <div class="space-y-6">

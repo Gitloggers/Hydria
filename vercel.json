@@ -1,4 +1,5 @@
 {
+  "version": 2,
   "functions": {
     "api/**/*.php": {
       "runtime": "vercel-php@0.6.2"
@@ -18,12 +19,28 @@
       "dest": "/$1"
     },
     {
-      "src": "/(.*\\.png|.*\\.jpg|.*\\.ico|.*\\.svg)",
+      "src": "/(.*\\.png|.*\\.jpg|.*\\.jpeg|.*\\.gif|.*\\.webp|.*\\.ico|.*\\.svg)",
       "dest": "/$1"
     },
     {
-      "src": "/(.*\\.php)",
-      "dest": "/api/$1"
+      "src": "/login.php",
+      "dest": "/api/login.php"
+    },
+    {
+      "src": "/logout.php",
+      "dest": "/api/logout.php"
+    },
+    {
+      "src": "/admin_dashboard.php",
+      "dest": "/api/admin_dashboard.php"
+    },
+    {
+      "src": "/admin_projects.php",
+      "dest": "/api/admin_projects.php"
+    },
+    {
+      "src": "/admin_settings.php",
+      "dest": "/api/admin_settings.php"
     },
     {
       "src": "/",
