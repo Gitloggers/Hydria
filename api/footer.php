@@ -101,40 +101,7 @@
         }
     });
 
-    // Mobile Menu Toggle
-    const menuBtn = document.getElementById('menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    menuBtn.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-    });
-
-    // Navbar Scroll Effect
-    window.addEventListener('scroll', () => {
-        const nav = document.getElementById('navbar');
-        if (window.scrollY > 50) {
-            nav.classList.add('py-2', 'shadow-xl');
-            nav.classList.remove('py-4');
-        } else {
-            nav.classList.remove('py-2', 'shadow-xl');
-            nav.classList.add('py-4');
-        }
-    });
-
     // Reveal on Scroll
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-
-    const revealObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('active');
-            }
-        });
-    }, observerOptions);
-
-    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
     const observerOptions = {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
