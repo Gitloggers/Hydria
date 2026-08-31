@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS `projects` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
   `category` varchar(100) DEFAULT NULL,
+  `meta` varchar(255) DEFAULT NULL,
   `image_url` varchar(255) DEFAULT NULL,
   `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)

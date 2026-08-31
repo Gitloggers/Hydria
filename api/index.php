@@ -459,43 +459,50 @@
 </section>
 
 <!-- Projects Gallery -->
-<section id="projects" class="py-24 bg-white">
-    <div class="max-w-7xl mx-auto px-6">
-        <div class="text-center space-y-4 mb-16">
-            <h2 class="text-accent font-black text-sm uppercase tracking-[0.3em]">OUR PORTFOLIO</h2>
-            <h3 class="text-primary text-5xl font-display">ARCHITECTURAL MILESTONES</h3>
+<section id="projects" class="relative bg-paper" style="background-image: linear-gradient(rgba(26,29,31,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(26,29,31,.06) 1px, transparent 1px); background-size: 80px 80px;">
+    <div class="max-w-[1440px] mx-auto px-5 py-24 md:px-10 md:py-36">
+        <div class="mb-14 grid gap-6 border-t border-ink pt-5 md:grid-cols-12">
+            <span class="font-mono text-[11px] uppercase tracking-[0.16em] text-slate-500 md:col-span-3">01 / Gallery of Form</span>
+            <h2 class="font-serif text-5xl leading-none md:col-span-7 md:text-8xl">Built to endure.<br><em class="text-accent">Made to belong.</em></h2>
         </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="grid border-l border-t border-ink md:grid-cols-12">
             <?php
             require_once 'db.php';
             try {
                 $stmt = $pdo->query("SELECT * FROM projects ORDER BY id DESC");
                 $i = 0;
                 if ($stmt->rowCount() > 0) {
-                    while ($row = $stmt->fetch()) {
+                    while ($row = $stmt->fetch()):
                         $title = htmlspecialchars($row['title'] ?? 'Project Title');
-                        $category = htmlspecialchars($row['category'] ?? 'Category');
+                        $category = htmlspecialchars($row['category'] ?? '');
+                        $meta = htmlspecialchars($row['meta'] ?? '');
                         $image_url = htmlspecialchars($row['image_url'] ?? 'assets/villa.png');
                         if (strpos($image_url, 'assets/') === 0) {
                             $image_url = (isset($base_path) ? $base_path : '') . $image_url;
                         }
-
+                        $span = ($i % 2 === 0) ? 'md:col-span-7' : 'md:col-span-5';
+                        $aspect = ($i % 2 === 0) ? 'aspect-[4/3]' : 'aspect-[4/5]';
+                        $altMeta = !empty($meta) ? "<p class=\"font-mono text-right text-link-blue opacity-70 transition-opacity group-hover:opacity-100\">$meta</p>" : '';
                         echo "
-                        <div class=\"reveal reveal-delay-1 group relative overflow-hidden rounded-[2rem] bg-slate-100 aspect-[4/5] shadow-lg hover:shadow-2xl transition-all duration-500\">
-                            <img src=\"$image_url\" alt=\"$title\" class=\"w-full h-full object-cover transition-transform duration-700 group-hover:scale-110\">
-                            <div class=\"absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-10\">
-                                <span class=\"text-accent font-black text-xs uppercase tracking-widest mb-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500\">$category</span>
-                                <h4 class=\"text-white text-2xl font-display transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75\">$title</h4>
+                        <article class=\"$span group border-b border-r border-ink p-3 md:p-5\">
+                            <div class=\"overflow-hidden bg-slate-custom $aspect\">
+                                <img src=\"$image_url\" alt=\"$title\" class=\"h-full w-full grayscale transition duration-700 group-hover:scale-[1.02] group-hover:grayscale-0 object-cover\">
                             </div>
-                        </div>";
+                            <div class=\"grid grid-cols-2 gap-4 pt-4\">
+                                <div>
+                                    <h3 class=\"font-serif text-2xl\">$title</h3>
+                                    <p class=\"font-mono text-[11px] uppercase tracking-[0.16em] text-slate-500 mt-1\">$category</p>
+                                </div>
+                                $altMeta
+                            </div>
+                        </article>";
                         $i++;
-                    }
+                    endwhile;
                 } else {
-                    echo "<p class='col-span-full text-center py-20 text-slate-400'>No projects found in the database.</p>";
+                    echo "<p class=\"col-span-full text-center py-20 text-slate-400 font-mono text-sm uppercase tracking-widest\">No projects found in the database.</p>";
                 }
             } catch (PDOException $e) {
-                echo "<p class='col-span-full text-center py-20 text-slate-400'>Database connection error.</p>";
+                echo "<p class=\"col-span-full text-center py-20 text-slate-400\">Database connection error.</p>";
             }
             ?>
         </div>

@@ -40,6 +40,7 @@ if (isset($_POST['add_project'])) {
 
     $title = trim($_POST['title'] ?? '');
     $category = trim($_POST['category'] ?? '');
+    $meta = trim($_POST['meta'] ?? '');
     // Check if an external image URL was provided
     $external_url = trim($_POST['image_url_input'] ?? '');
     if (!empty($external_url)) {
@@ -127,10 +128,10 @@ if (isset($_POST['add_project'])) {
         }
     }
 
-    if (!empty($title) && !empty($category)) {
-        try {
-            $stmt = $pdo->prepare("INSERT INTO projects (title, category, image_url) VALUES (?, ?, ?)");
-            $stmt->execute([$title, $category, $image_url]);
+        if (!empty($title) && !empty($category)) {
+            try {
+                $stmt = $pdo->prepare("INSERT INTO projects (title, category, meta, image_url) VALUES (?, ?, ?, ?)");
+                $stmt->execute([$title, $category, $meta, $image_url]);
             
             $log_stmt = $pdo->prepare("INSERT INTO activity_logs (action) VALUES (?)");
             $log_stmt->execute(["Added New Project: $title"]);
@@ -282,6 +283,11 @@ include_once 'admin_header.php';
             </div>
 
             <div class="form-group">
+                <label>Meta / Materials</label>
+                <input type="text" name="meta" class="form-control-next" placeholder="e.g. Concrete · Oak · Glass">
+            </div>
+
+            <div class="form-group">
                 <label>Project Image (Upload)</label>
                 <input type="file" name="image" class="form-control-next">
                 <div style="font-size: 0.7rem; color: #E11D48; font-weight: 700; margin-top: 0.5rem; line-height: 1.2;">
@@ -329,6 +335,9 @@ include_once 'admin_header.php';
                                 <td>
                                     <div style="font-weight: 800; color: var(--primary); font-size: 1.125rem;"><?= htmlspecialchars($row['title']) ?></div>
                                     <div style="font-size: 0.75rem; color: var(--secondary); font-weight: 800; text-transform: uppercase; letter-spacing: 1px;"><?= htmlspecialchars($row['category']) ?></div>
+                                    <?php if (!empty($row['meta'])): ?>
+                                    <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.25rem;"><?= htmlspecialchars($row['meta']) ?></div>
+                                    <?php endif; ?>
                                 </td>
                                 <td style="text-align: right;">
                                     <form method="post" action="" onsubmit="return confirm('Remove this project from the live site?');">
