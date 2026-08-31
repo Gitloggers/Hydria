@@ -1,53 +1,3 @@
-<!-- Contact Section -->
-<section id="contact" class="py-24 bg-white relative overflow-hidden">
-    <div class="max-w-7xl mx-auto px-6">
-        <div class="bg-primary rounded-[3rem] overflow-hidden shadow-2xl relative">
-            <div class="absolute top-0 right-0 w-1/2 h-full hidden lg:block">
-                <img src="<?php echo isset($base_path) ? $base_path : ''; ?>assets/school.jpg" alt="Contact Us"
-                    class="w-full h-full object-cover opacity-50">
-                <div class="absolute inset-0 bg-gradient-to-r from-primary to-transparent"></div>
-            </div>
-
-            <div class="relative z-10 p-10 lg:p-20 lg:w-3/5">
-                <div class="space-y-4 mb-10">
-                    <h2 class="text-accent font-black text-sm uppercase tracking-[0.3em]">GET IN TOUCH</h2>
-                    <h3 class="text-white text-5xl font-display">LET'S BUILD SOMETHING GREAT</h3>
-                    <p class="text-white/60">Ready to start your project? Send us a message and our expert team will get
-                        back to you within 24 hours.</p>
-                </div>
-
-                <form id="contactForm" class="space-y-4">
-                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '') ?>">
-                    <div class="grid md:grid-cols-2 gap-4">
-                        <input type="text" id="name" placeholder="Full Name" required maxlength="100"
-                            class="w-full px-6 py-4 bg-white/5 border border-white/10 rounded-2xl text-white placeholder:text-white/30 focus:outline-none focus:border-accent transition-colors">
-                        <input type="email" id="email" placeholder="Email Address" required maxlength="100"
-                            class="w-full px-6 py-4 bg-white/5 border border-white/10 rounded-2xl text-white placeholder:text-white/30 focus:outline-none focus:border-accent transition-colors">
-                    </div>
-                    <select id="service" required
-                        class="w-full px-6 py-4 bg-white/5 border border-white/10 rounded-2xl text-white focus:outline-none focus:border-accent transition-colors appearance-none">
-                        <option value="" disabled selected class="bg-primary">Service Interested In</option>
-                        <option value="residential" class="bg-primary">Residential</option>
-                        <option value="commercial" class="bg-primary">Commercial</option>
-                        <option value="industrial" class="bg-primary">Industrial</option>
-                        <option value="other" class="bg-primary">Other</option>
-                    </select>
-                    <textarea id="message" placeholder="Tell us about your project..." rows="4" required maxlength="2000"
-                        class="w-full px-6 py-4 bg-white/5 border border-white/10 rounded-2xl text-white placeholder:text-white/30 focus:outline-none focus:border-accent transition-colors"></textarea>
-
-                    <button type="submit"
-                        class="w-full py-5 bg-accent hover:bg-[#B3933B] text-white font-black rounded-2xl transition-all shadow-xl shadow-accent/20 flex items-center justify-center gap-3 group">
-                        SUBMIT INQUIRY
-                        <i data-lucide="send"
-                            class="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
-                    </button>
-                    <div id="formStatus" class="text-center text-sm font-bold mt-4"></div>
-                </form>
-            </div>
-        </div>
-    </div>
-</section>
-
 <!-- Footer -->
 <footer class="bg-slate-50 pt-20 border-t border-slate-200">
     <div class="max-w-7xl mx-auto px-6 pb-20">
@@ -95,11 +45,11 @@
                     </li>
                     <li class="flex gap-3 text-slate-500">
                         <i data-lucide="phone" class="w-5 h-5 text-accent flex-shrink-0"></i>
-                        0926-735-0297
+                        +63 921 419 2186
                     </li>
                     <li class="flex gap-3 text-slate-500">
                         <i data-lucide="mail" class="w-5 h-5 text-accent flex-shrink-0"></i>
-                        hydriaconstruction@gmail.com
+                        hydriaconstructioninc@gmail.com
                     </li>
                 </ul>
             </div>
@@ -151,131 +101,40 @@
         }
     });
 
-    // Email Real-Time Validation
-    const emailInput = document.getElementById('email');
-    const emailHint = document.createElement('p');
-    emailHint.id = 'emailHint';
-    emailHint.className = 'text-xs font-bold mt-1 transition-all';
-    emailHint.style.display = 'none';
-    emailInput.insertAdjacentElement('afterend', emailHint);
-
-    function validateEmailFormat(email) {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
-    }
-
-    let emailDebounce;
-    emailInput.addEventListener('input', () => {
-        const val = emailInput.value.trim();
-        clearTimeout(emailDebounce);
-
-        if (val.length === 0) {
-            emailHint.style.display = 'none';
-            emailInput.style.borderColor = '';
-            return;
-        }
-
-        if (!validateEmailFormat(val)) {
-            emailHint.textContent = '⚠ Enter a valid email (e.g. you@gmail.com)';
-            emailHint.style.display = 'block';
-            emailHint.style.color = '#f87171';
-            emailInput.style.borderColor = '#f87171';
-            return;
-        }
-
-        // Display checking state immediately when format matches
-        emailHint.textContent = '⚡ Verifying domain...';
-        emailHint.style.display = 'block';
-        emailHint.style.color = '#f59e0b'; // amber-500
-        emailInput.style.borderColor = '#f59e0b';
-
-        emailDebounce = setTimeout(async () => {
-            try {
-                const res = await fetch(`validate-email.php?email=${encodeURIComponent(val)}`);
-                const result = await res.json();
-
-                // Check that the user hasn't typed anything else in the meantime
-                if (emailInput.value.trim() !== val) return;
-
-                if (result.valid) {
-                    emailHint.textContent = '✓ Looks good!';
-                    emailHint.style.color = '#34d399';
-                    emailInput.style.borderColor = '#34d399';
-                } else {
-                    emailHint.textContent = `⚠ ${result.message}`;
-                    emailHint.style.color = '#f87171';
-                    emailInput.style.borderColor = '#f87171';
-                }
-            } catch (e) {
-                if (emailInput.value.trim() !== val) return;
-                // Offline or fetch failure fallback
-                emailHint.textContent = '✓ Format looks correct';
-                emailHint.style.color = '#34d399';
-                emailInput.style.borderColor = '#34d399';
-            }
-        }, 600);
+    // Mobile Menu Toggle
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    menuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
     });
 
-    emailInput.addEventListener('blur', () => {
-        if (emailInput.value.trim().length === 0) {
-            emailHint.style.display = 'none';
-            emailInput.style.borderColor = '';
-        }
-    });
-
-    // Contact Form Handler
-    document.getElementById('contactForm')?.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const status = document.getElementById('formStatus');
-        const submitBtn = e.target.querySelector('button[type="submit"]');
-
-        // Client-side email format check before hitting server
-        const emailVal = document.getElementById('email').value.trim();
-        if (!validateEmailFormat(emailVal)) {
-            status.textContent = '⚠ Please enter a valid email address.';
-            status.className = 'text-center text-sm font-bold mt-4 text-red-400';
-            document.getElementById('email').focus();
-            return;
-        }
-
-        status.textContent = 'Sending...';
-        status.className = 'text-center text-sm font-bold mt-4 text-white/50';
-        submitBtn.disabled = true;
-
-        const formData = {
-            name: document.getElementById('name').value,
-            email: emailVal,
-            service: document.getElementById('service').value,
-            message: document.getElementById('message').value,
-            csrf_token: document.querySelector('input[name="csrf_token"]').value
-        };
-
-        try {
-            const response = await fetch('process-contact.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
-            });
-            const result = await response.json();
-
-            if (result.success) {
-                status.textContent = 'Message sent successfully!';
-                status.className = 'text-center text-sm font-bold mt-4 text-accent';
-                e.target.reset();
-                emailHint.style.display = 'none';
-                emailInput.style.borderColor = '';
-            } else {
-                status.textContent = result.message || 'Error sending message.';
-                status.className = 'text-center text-sm font-bold mt-4 text-red-400';
-            }
-        } catch (error) {
-            status.textContent = 'Network error. Please try again.';
-            status.className = 'text-center text-sm font-bold mt-4 text-red-400';
-        } finally {
-            submitBtn.disabled = false;
+    // Navbar Scroll Effect
+    window.addEventListener('scroll', () => {
+        const nav = document.getElementById('navbar');
+        if (window.scrollY > 50) {
+            nav.classList.add('py-2', 'shadow-xl');
+            nav.classList.remove('py-4');
+        } else {
+            nav.classList.remove('py-2', 'shadow-xl');
+            nav.classList.add('py-4');
         }
     });
 
     // Reveal on Scroll
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
     const observerOptions = {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'

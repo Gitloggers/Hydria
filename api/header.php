@@ -65,8 +65,7 @@ if (file_exists('modern-ui.css')) {
                     class="text-sm font-bold text-primary/70 hover:text-primary transition-colors">Services</a>
                 <a href="#projects"
                     class="text-sm font-bold text-primary/70 hover:text-primary transition-colors">Projects</a>
-                <a href="#contact"
-                    class="px-5 py-2.5 bg-primary text-white text-sm font-bold rounded-lg hover:bg-primary/90 transition-all hover:shadow-lg hover:shadow-primary/20">
+                <a href="mailto:hydriaconstructioninc@gmail.com" class="px-5 py-2.5 bg-primary text-white text-sm font-bold rounded-lg hover:bg-primary/90 transition-all hover:shadow-lg hover:shadow-primary/20">
                     Get a Quote
                 </a>
             </div>
@@ -84,7 +83,7 @@ if (file_exists('modern-ui.css')) {
             <a href="#about" class="text-lg font-bold text-primary">About</a>
             <a href="#services" class="text-lg font-bold text-primary">Services</a>
             <a href="#projects" class="text-lg font-bold text-primary">Projects</a>
-            <a href="#contact" class="w-full py-4 bg-primary text-white text-center font-bold rounded-xl mt-2">Get a
+            <a href="mailto:hydriaconstructioninc@gmail.com" class="w-full py-4 bg-primary text-white text-center font-bold rounded-xl mt-2">Get a
                 Quote</a>
         </div>
     </nav>

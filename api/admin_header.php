@@ -23,10 +23,10 @@ if (file_exists('modern-ui.css')) {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --primary: #0D1B4B;
-            --primary-glass: rgba(13, 27, 75, 0.98);
-            --secondary: #C9A84C;
-            --secondary-hover: #B3933B;
+            --primary: #0A3D7C;
+            --primary-glass: rgba(10, 61, 124, 0.98);
+            --secondary: #F15A24;
+            --secondary-hover: #D84A19;
             --bg: #F8FAFC;
             --surface: #FFFFFF;
             --text: #1E293B;
@@ -101,7 +101,7 @@ if (file_exists('modern-ui.css')) {
             align-items: center;
             gap: 1rem;
             padding: 1rem 1.5rem;
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(255, 255, 255, 0.6);
             text-decoration: none;
             font-weight: 600;
             border-radius: 1rem;
@@ -110,8 +110,8 @@ if (file_exists('modern-ui.css')) {
             font-size: 0.9rem;
         }
 
-        .nav-link:hover { background-color: rgba(201, 168, 76, 0.1); color: var(--secondary); transform: translateX(5px); }
-        .nav-link.active { background-color: var(--secondary); color: var(--primary); font-weight: 800; box-shadow: 0 10px 15px -3px rgba(201, 168, 76, 0.3); }
+        .nav-link:hover { background-color: rgba(241, 90, 36, 0.12); color: var(--secondary); transform: translateX(5px); }
+        .nav-link.active { background-color: var(--secondary); color: #FFFFFF; font-weight: 800; box-shadow: 0 10px 15px -3px rgba(241, 90, 36, 0.35); }
         
         /* Mobile Sidebar Toggle */
         .sidebar-toggle {
@@ -212,9 +212,6 @@ if (file_exists('modern-ui.css')) {
                 </a>
                 <a href="admin_projects.php" class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'admin_projects.php' ? 'active' : '' ?>">
                     <i class="fas fa-hammer"></i> Projects
-                </a>
-                <a href="admin_inquiries.php" class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'admin_inquiries.php' ? 'active' : '' ?>">
-                    <i class="fas fa-envelope"></i> Inquiries
                 </a>
                 <a href="admin_settings.php" class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'admin_settings.php' ? 'active' : '' ?>">
                     <i class="fas fa-cog"></i> Settings
