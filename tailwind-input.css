@@ -4,8 +4,10 @@
 
 /* Custom Modern UI Styles */
 :root {
-  --primary-navy: #0D1B4B;
-  --accent-gold: #C9A84C;
+  --primary-navy: #0A3D7C;
+  --primary-dark: #061327;
+  --accent-orange: #F15A24;
+  --accent-hover: #D84A19;
   --white: #FFFFFF;
   --slate-600: #475569;
   --slate-900: #0f172a;
@@ -52,8 +54,8 @@ body {
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(201, 168, 76, 0.4); }
-  50% { box-shadow: 0 0 0 12px rgba(201, 168, 76, 0); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(241, 90, 36, 0.4); }
+  50% { box-shadow: 0 0 0 12px rgba(241, 90, 36, 0); }
 }
 
 .animate-fade-up { animation: fadeInUp 0.7s ease forwards; }
@@ -93,7 +95,7 @@ body {
 /* Hero parallax bg */
 .hero-bg {
   background-image: 
-    linear-gradient(to right, rgba(13, 27, 75, 0.95) 0%, rgba(13, 27, 75, 0.8) 50%, rgba(13, 27, 75, 0.4) 100%),
+    linear-gradient(to right, rgba(6, 19, 39, 0.95) 0%, rgba(10, 61, 124, 0.85) 50%, rgba(6, 19, 39, 0.7) 100%),
     url('assets/hero.png');
   background-size: cover;
   background-position: center;
@@ -104,8 +106,8 @@ body {
 .navbar-glass {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  background-color: rgba(255, 255, 255, 0.8);
-  border-bottom: 1px solid rgba(13, 27, 75, 0.1);
+  background-color: rgba(255, 255, 255, 0.92);
+  border-bottom: 1px solid rgba(10, 61, 124, 0.1);
 }
 
 /* Card hover effects */
@@ -124,4 +126,5 @@ body {
 /* Scrollbar */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: #f8fafc; }
-::-webkit-scrollbar-thumb { background: var(--accent-gold); border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: var(--accent-orange); border-radius: 3px; }
+

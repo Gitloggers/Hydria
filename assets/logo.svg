@@ -1,0 +1,40 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' width='100%' height='100%'>
+  <!-- Background transparent -->
+  <g id='house-logo'>
+    <!-- Left Chimney -->
+    <rect x='305' y='220' width='52.5' height='215' fill='#0A3D7C' />
+    
+    # Left Roof Beam
+    <polygon points='205,435 500,212.5 500,262.5 240,460' fill='#0A3D7C' />
+    
+    # Right Roof Beam
+    <polygon points='500,212.5 795,435 760,460 500,262.5' fill='#F15A24' />
+    
+    # Right Support Pillar
+    <rect x='675' y='400' width='40' height='145' fill='#F15A24' />
+    
+    # Central Window (2x2)
+    <rect x='450' y='375' width='100' height='110' fill='#0A3D7C' />
+    <!-- Window inner dividers -->
+    <rect x='495' y='375' width='10' height='110' fill='#FFFFFF' />
+    <rect x='450' y='425' width='100' height='10' fill='#FFFFFF' />
+    
+    <!-- Cat silhouette in bottom-right pane (505..550, 435..485) -->
+    <path d='M 518 485 L 515 470 C 514 460 518 455 522 455 C 527 460 532 465 535 455 C 538 460 541 470 542 485 Z' fill='#FFFFFF' />
+    <circle cx='527' cy='452' r='8' fill='#FFFFFF' />
+    <polygon points='520,453 523,443 526,453' fill='#FFFFFF' />
+    <polygon points='528,453 531,443 534,453' fill='#FFFFFF' />
+    
+    # Curved Swoosh Arc
+    <path d='M 175 580 Q 500 660 825 580' fill='none' stroke='#0A3D7C' stroke-width='16' stroke-linecap='round' />
+    
+    # HYDRI Text
+    <text x='110' y='715' font-family='Inter, Arial, sans-serif' font-weight='900' font-size='105' fill='#0A3D7C' letter-spacing='4'>HYDRI</text>
+    
+    # Chevron 'A'
+    <polygon points='770,715 830,620 890,715 865,715 830,660 795,715' fill='#F15A24' />
+    
+    # Subtitle — CONSTRUCTION INC —
+    <text x='110' y='765' font-family='Inter, Arial, sans-serif' font-weight='800' font-size='36' fill='#F15A24' letter-spacing='6'>— CONSTRUCTION INC —</text>
+  </g>
+</svg>

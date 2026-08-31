@@ -87,8 +87,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #0f172a;
-            --secondary: #fbbf24;
+            --primary: #0A3D7C;
+            --secondary: #F15A24;
+            --secondary-hover: #D84A19;
             --glass: rgba(255, 255, 255, 0.05);
             --border: rgba(255, 255, 255, 0.1);
         }
@@ -101,7 +102,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         body {
             font-family: 'Outfit', sans-serif;
-            background: #020617;
+            background: #061327;
             height: 100vh;
             display: flex;
             align-items: center;
@@ -115,8 +116,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             content: '';
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: url('https://images.unsplash.com/photo-1541913066827-024214f4882e?auto=format&fit=crop&q=80&w=2000') no-repeat center center/cover;
-            opacity: 0.3;
+            background: url('<?php echo $base_path; ?>assets/hero.png') no-repeat center center/cover;
+            opacity: 0.25;
             z-index: -1;
         }
 
@@ -124,7 +125,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             width: 100%;
             max-width: 450px;
             padding: 3rem;
-            background: rgba(15, 23, 42, 0.8);
+            background: rgba(10, 61, 124, 0.85);
             backdrop-filter: blur(20px);
             border: 1px solid var(--border);
             border-radius: 2rem;
@@ -143,15 +144,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         .login-title { font-size: 1.75rem; font-weight: 800; margin-bottom: 0.5rem; }
-        .login-subtitle { font-size: 0.875rem; color: rgba(255, 255, 255, 0.6); margin-bottom: 2rem; }
+        .login-subtitle { font-size: 0.875rem; color: rgba(255, 255, 255, 0.7); margin-bottom: 2rem; }
 
         .form-group { margin-bottom: 1.5rem; text-align: left; }
-        .form-group label { display: block; margin-bottom: 0.5rem; font-size: 0.875rem; font-weight: 600; color: rgba(255, 255, 255, 0.8); }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-size: 0.875rem; font-weight: 600; color: rgba(255, 255, 255, 0.9); }
 
         .form-control {
             width: 100%;
             padding: 1rem;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.08);
             border: 1px solid var(--border);
             border-radius: 0.75rem;
             color: #fff;
@@ -162,15 +163,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .form-control:focus {
             outline: none;
             border-color: var(--secondary);
-            background: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 15px rgba(251, 191, 36, 0.2);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 15px rgba(241, 90, 36, 0.3);
         }
 
         .btn-login {
             width: 100%;
             padding: 1rem;
             background: var(--secondary);
-            color: #000;
+            color: #fff;
             border: none;
             border-radius: 0.75rem;
             font-size: 1rem;
@@ -181,9 +182,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         .btn-login:hover {
-            background: #f59e0b;
+            background: var(--secondary-hover);
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px -5px rgba(251, 191, 36, 0.4);
+            box-shadow: 0 10px 20px -5px rgba(241, 90, 36, 0.4);
         }
 
         .error-message {
