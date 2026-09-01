@@ -53,11 +53,7 @@ if (isset($_POST['add_project'])) {
 
     $title = trim($_POST['title'] ?? '');
     $category = trim($_POST['category'] ?? '');
-    // Check if an external image URL was provided
-    $external_url = trim($_POST['image_url_input'] ?? '');
-    if (!empty($external_url)) {
-        $image_url = $external_url;
-    } elseif (!empty($_FILES['image']['name']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+    if (!empty($_FILES['image']['name']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
         $source_file = $_FILES['image']['tmp_name'];
         $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
         $allowed = ['jpg', 'jpeg', 'png', 'gif'];
@@ -293,15 +289,7 @@ include_once 'admin_header.php';
 
             <div class="form-group">
                 <label>Project Image (Upload)</label>
-                <input type="file" name="image" class="form-control-next">
-                <div style="font-size: 0.7rem; color: #E11D48; font-weight: 700; margin-top: 0.5rem; line-height: 1.2;">
-                    ⚠️ Note: File uploads require a writeable disk (Localhost / Render). On Vercel, please use the Image URL input below.
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>Or Image URL (Required on Vercel)</label>
-                <input type="url" name="image_url_input" class="form-control-next" placeholder="https://example.com/image.jpg">
+                <input type="file" name="image" class="form-control-next" accept="image/jpeg,image/png,image/gif">
             </div>
 
             <button type="submit" name="add_project" class="btn-magnetic">Upload to Gallery</button>
