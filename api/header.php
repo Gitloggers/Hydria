@@ -42,6 +42,9 @@ if (file_exists('modern-ui.css')) {
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
+    <!-- Swiper.js -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
     <link rel="stylesheet" href="<?php echo $base_path; ?>modern-ui.css?v=2.0">
 </head>
 

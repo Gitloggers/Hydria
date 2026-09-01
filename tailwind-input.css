@@ -29,49 +29,124 @@ body {
 
 /* Animations */
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(40px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes fadeInLeft {
-  from { opacity: 0; transform: translateX(-40px); }
-  to { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 @keyframes fadeInRight {
-  from { opacity: 0; transform: translateX(40px); }
-  to { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 @keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.92); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 @keyframes slideDown {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(241, 90, 36, 0.4); }
-  50% { box-shadow: 0 0 0 12px rgba(241, 90, 36, 0); }
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(241, 90, 36, 0.4);
+  }
+
+  50% {
+    box-shadow: 0 0 0 12px rgba(241, 90, 36, 0);
+  }
 }
 
-.animate-fade-up { animation: fadeInUp 0.7s ease forwards; }
-.animate-fade-left { animation: fadeInLeft 0.7s ease forwards; }
-.animate-fade-right { animation: fadeInRight 0.7s ease forwards; }
-.animate-scale-in { animation: scaleIn 0.6s ease forwards; }
-.animate-slide-down { animation: slideDown 0.5s ease forwards; }
-.animate-pulse-glow { animation: pulse-glow 2s infinite; }
+.animate-fade-up {
+  animation: fadeInUp 0.7s ease forwards;
+}
 
-.delay-100 { animation-delay: 0.1s; }
-.delay-200 { animation-delay: 0.2s; }
-.delay-300 { animation-delay: 0.3s; }
-.delay-400 { animation-delay: 0.4s; }
-.delay-500 { animation-delay: 0.5s; }
+.animate-fade-left {
+  animation: fadeInLeft 0.7s ease forwards;
+}
 
-.opacity-0 { opacity: 0; }
+.animate-fade-right {
+  animation: fadeInRight 0.7s ease forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.6s ease forwards;
+}
+
+.animate-slide-down {
+  animation: slideDown 0.5s ease forwards;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s infinite;
+}
+
+.delay-100 {
+  animation-delay: 0.1s;
+}
+
+.delay-200 {
+  animation-delay: 0.2s;
+}
+
+.delay-300 {
+  animation-delay: 0.3s;
+}
+
+.delay-400 {
+  animation-delay: 0.4s;
+}
+
+.delay-500 {
+  animation-delay: 0.5s;
+}
+
+.opacity-0 {
+  opacity: 0;
+}
 
 /* Reveal on Scroll */
 .reveal {
@@ -88,13 +163,21 @@ body {
 }
 
 /* Delay modifiers for sequential reveals */
-.reveal-delay-1 { transition-delay: 0.1s; }
-.reveal-delay-2 { transition-delay: 0.2s; }
-.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-1 {
+  transition-delay: 0.1s;
+}
+
+.reveal-delay-2 {
+  transition-delay: 0.2s;
+}
+
+.reveal-delay-3 {
+  transition-delay: 0.3s;
+}
 
 /* Hero parallax bg */
 .hero-bg {
-  background-image: 
+  background-image:
     linear-gradient(to right, rgba(6, 19, 39, 0.95) 0%, rgba(10, 61, 124, 0.85) 50%, rgba(6, 19, 39, 0.7) 100%),
     url('assets/hero.png');
   background-size: cover;
@@ -124,7 +207,15 @@ body {
 }
 
 /* Scrollbar */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #f8fafc; }
-::-webkit-scrollbar-thumb { background: var(--accent-orange); border-radius: 3px; }
+::-webkit-scrollbar {
+  width: 6px;
+}
 
+::-webkit-scrollbar-track {
+  background: #f8fafc;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent-orange);
+  border-radius: 3px;
+}

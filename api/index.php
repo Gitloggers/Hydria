@@ -459,86 +459,332 @@
     </div>
 </section>
 
-<!-- Projects Gallery -->
-<section id="projects" class="py-24 bg-white">
+<!-- Projects Gallery – Horizontal Carousel -->
+<section id="projects" class="py-24 bg-white overflow-hidden">
     <div class="max-w-7xl mx-auto px-6">
-        <div class="text-center space-y-4 mb-16">
+
+        <!-- Section Heading -->
+        <div class="text-center space-y-3 mb-14 reveal">
             <h2 class="text-accent font-black text-sm uppercase tracking-[0.3em]">OUR PORTFOLIO</h2>
             <h3 class="text-primary text-5xl font-display">ARCHITECTURAL MILESTONES</h3>
         </div>
 
-        <div class="relative group/carousel">
-            <div id="projects-carousel" class="flex gap-6 overflow-x-auto scroll-smooth pb-6 snap-x snap-mandatory" style="scrollbar-width: none; -ms-overflow-style: none;">
+        <!-- Mobile swipe hint (auto-fades) -->
+        <div class="swipe-hint" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14M13 6l6 6-6 6"/>
+            </svg>
+            Swipe to explore
+        </div>
+
+        <!-- Swiper Carousel -->
+        <div class="swiper projects-swiper">
+            <div class="swiper-wrapper">
                 <?php
                 require_once 'db.php';
                 try {
                     $stmt = $pdo->query("SELECT * FROM projects ORDER BY id DESC");
-                    $i = 0;
                     if ($stmt->rowCount() > 0) {
                         while ($row = $stmt->fetch()) {
-                            $title = htmlspecialchars($row['title'] ?? 'Project Title');
-                            $category = htmlspecialchars($row['category'] ?? 'Category');
+                            $title     = htmlspecialchars($row['title']    ?? 'Project Title');
+                            $category  = htmlspecialchars($row['category'] ?? 'Category');
                             $image_url = htmlspecialchars($row['image_url'] ?? 'assets/villa.png');
                             if (strpos($image_url, 'assets/') === 0) {
                                 $image_url = (isset($base_path) ? $base_path : '') . $image_url;
                             }
-
                             echo "
-                            <div class=\"reveal reveal-delay-1 group relative overflow-hidden rounded-[2rem] bg-slate-100 aspect-[3/4] shadow-lg hover:shadow-2xl transition-all duration-500 flex-shrink-0 w-64 snap-start\">
-                                <img src=\"$image_url\" alt=\"$title\" class=\"w-full h-full object-cover transition-transform duration-700 group-hover:scale-110\">
-                                <div class=\"absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8\">
-                                    <span class=\"text-accent font-black text-xs uppercase tracking-widest mb-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500\">$category</span>
-                                    <h4 class=\"text-white text-2xl font-display transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75\">$title</h4>
+                            <div class=\"swiper-slide\">
+                                <div class=\"proj-card\">
+                                    <img src=\"$image_url\" alt=\"$title\" class=\"proj-img\" draggable=\"false\" loading=\"lazy\">
+                                    <div class=\"proj-overlay\">
+                                        <div class=\"proj-overlay-text\">
+                                            <span class=\"proj-category\">$category</span>
+                                            <h4 class=\"proj-title\">$title</h4>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>";
-                            $i++;
                         }
                     } else {
-                        echo "<p class='text-center py-20 text-slate-400 w-full'>No projects found in the database.</p>";
+                        echo "<div class=\"swiper-slide\"><p class='text-center py-20 text-slate-400'>No projects found in the database.</p></div>";
                     }
                 } catch (PDOException $e) {
-                    echo "<p class='text-center py-20 text-slate-400 w-full'>Database connection error.</p>";
+                    echo "<div class=\"swiper-slide\"><p class='text-center py-20 text-slate-400'>Database connection error.</p></div>";
                 }
                 ?>
             </div>
-
-            <button id="scroll-left" class="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/90 backdrop-blur-md rounded-full shadow-2xl items-center justify-center text-primary hover:bg-accent hover:text-white transition-all duration-300 z-10 opacity-0 group-hover/carousel:opacity-100">
-                <i data-lucide="chevron-left" class="w-5 h-5"></i>
-            </button>
-            <button id="scroll-right" class="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/90 backdrop-blur-md rounded-full shadow-2xl items-center justify-center text-primary hover:bg-accent hover:text-white transition-all duration-300 z-10 opacity-0 group-hover/carousel:opacity-100">
-                <i data-lucide="chevron-right" class="w-5 h-5"></i>
-            </button>
         </div>
 
-        <script>
-            (function() {
-                const carousel = document.getElementById('projects-carousel');
-                const leftBtn = document.getElementById('scroll-left');
-                const rightBtn = document.getElementById('scroll-right');
-                if (!carousel || !leftBtn || !rightBtn) return;
-
-                const scrollAmount = 300;
-
-                leftBtn.addEventListener('click', () => {
-                    carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-                });
-
-                rightBtn.addEventListener('click', () => {
-                    carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-                });
-
-                const updateButtons = () => {
-                    leftBtn.style.opacity = carousel.scrollLeft <= 10 ? '0' : '';
-                    rightBtn.style.opacity = carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth - 10 ? '0' : '';
-                };
-
-                carousel.addEventListener('scroll', updateButtons);
-                window.addEventListener('resize', updateButtons);
-                updateButtons();
-            })();
-        </script>
+        <!-- Dot Pagination -->
+        <div id="proj-pagination" class="flex justify-center gap-2 mt-10"></div>
     </div>
 </section>
+
+<style>
+/* ═══════════════════════════════════════════════
+   Projects Carousel — Full Responsive Styles
+   Brand: Royal Blue #0A3D7C · Orange #F15A24
+   ═══════════════════════════════════════════════ */
+
+/* ── Carousel container ── */
+.projects-swiper {
+    overflow: visible;          /* allow edge-fade to work */
+    width: 100%;
+    padding-bottom: 4px;        /* room for box-shadow on cards */
+    /* Mask: content fades at the right edge to hint at more slides */
+    -webkit-mask-image: linear-gradient(
+        to right,
+        transparent 0%,
+        black 4%,
+        black 88%,
+        transparent 100%
+    );
+    mask-image: linear-gradient(
+        to right,
+        transparent 0%,
+        black 4%,
+        black 88%,
+        transparent 100%
+    );
+}
+
+/* On very small screens skip the left fade so the first card isn't clipped */
+@media (max-width: 480px) {
+    .projects-swiper {
+        -webkit-mask-image: linear-gradient(
+            to right,
+            black 0%,
+            black 88%,
+            transparent 100%
+        );
+        mask-image: linear-gradient(
+            to right,
+            black 0%,
+            black 88%,
+            transparent 100%
+        );
+    }
+}
+
+/* ── Slide sizing ── */
+.projects-swiper .swiper-slide {
+    height: auto;               /* let aspect-ratio drive height */
+    border-radius: 2rem;
+    /* subtle 3-D depth shift as non-active slides recede */
+    opacity: 0.85;
+    transform: scale(0.97);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    will-change: transform, opacity;
+}
+
+/* Fully-visible/active slide */
+.projects-swiper .swiper-slide-active,
+.projects-swiper .swiper-slide-visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* ── Project card ── */
+.proj-card {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 2rem;
+    background: #e2e8f0;        /* slate-200 placeholder */
+
+    /* Responsive card height via aspect-ratio */
+    aspect-ratio: 4 / 5;
+
+    box-shadow:
+        0 4px 16px rgba(10, 61, 124, 0.10),
+        0 1px  4px rgba(10, 61, 124, 0.06);
+
+    cursor: grab;
+    transition:
+        box-shadow 0.4s ease,
+        transform  0.4s ease;
+}
+.proj-card:active { cursor: grabbing; }
+
+/* Lift & deepen shadow on hover (desktop) */
+@media (hover: hover) {
+    .proj-card:hover {
+        box-shadow:
+            0 20px 48px rgba(10, 61, 124, 0.18),
+            0  6px 16px rgba(10, 61, 124, 0.10);
+        transform: translateY(-4px);
+    }
+    /* Zoom image on card hover */
+    .proj-card:hover .proj-img {
+        transform: scale(1.08);
+    }
+    /* Reveal overlay on hover */
+    .proj-card:hover .proj-overlay {
+        opacity: 1;
+    }
+    .proj-card:hover .proj-overlay-text {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* ── Card image ── */
+.proj-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+/* ── Gradient overlay ── */
+.proj-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to top,
+        rgba(10, 61, 124, 0.92) 0%,
+        rgba(10, 61, 124, 0.22) 50%,
+        transparent 100%
+    );
+    opacity: 0;
+    transition: opacity 0.45s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 2rem;
+}
+
+/* ── Overlay text ── */
+.proj-category {
+    color: #F15A24;
+    font-size: 0.7rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 0.4rem;
+    font-family: Inter, sans-serif;
+}
+
+.proj-title {
+    color: #fff;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    line-height: 1.15;
+    margin: 0;
+}
+
+.proj-overlay-text {
+    transform: translateY(12px);
+    opacity: 0;
+    transition:
+        transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity   0.45s ease;
+    transition-delay: 0.05s;
+}
+
+/* On touch devices always show overlay (no hover) */
+@media (hover: none) {
+    .proj-overlay {
+        opacity: 1;
+        background: linear-gradient(
+            to top,
+            rgba(10, 61, 124, 0.80) 0%,
+            rgba(10, 61, 124, 0.10) 55%,
+            transparent 100%
+        );
+    }
+    .proj-overlay-text {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* ── Swipe hint badge (mobile only) ── */
+.swipe-hint {
+    display: none;
+}
+
+@media (max-width: 767px) {
+    .swipe-hint {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        margin: 0 auto 1.5rem;
+        padding: 0.35rem 0.9rem;
+        background: rgba(10, 61, 124, 0.07);
+        border: 1px solid rgba(10, 61, 124, 0.14);
+        border-radius: 9999px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: #0A3D7C;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        /* Fade out after 3 s once the user starts scrolling */
+        animation: hintFade 4s ease 1.5s forwards;
+    }
+    .swipe-hint svg {
+        width: 14px;
+        height: 14px;
+        flex-shrink: 0;
+        animation: nudge 1.2s ease-in-out infinite;
+    }
+    @keyframes nudge {
+        0%, 100% { transform: translateX(0); }
+        50%       { transform: translateX(4px); }
+    }
+    @keyframes hintFade {
+        0%   { opacity: 1; }
+        80%  { opacity: 1; }
+        100% { opacity: 0; pointer-events: none; }
+    }
+
+    /* Slightly shorter cards on mobile */
+    .proj-card {
+        aspect-ratio: 3 / 4;
+    }
+}
+
+/* ── Pagination dots ── */
+#proj-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    margin-top: 2.25rem;
+    min-height: 16px;
+}
+
+#proj-pagination .swiper-pagination-bullet {
+    width: 8px;
+    height: 8px;
+    background: #0A3D7C;
+    opacity: 0.22;
+    border-radius: 9999px;
+    transition: width 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                background 0.25s ease,
+                opacity 0.25s ease;
+    cursor: pointer;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+#proj-pagination .swiper-pagination-bullet-active {
+    width: 28px;
+    background: #F15A24;
+    opacity: 1;
+}
+
+/* ── Section heading responsive ── */
+@media (max-width: 480px) {
+    #projects h3.font-display {
+        font-size: 2.4rem;
+    }
+}
+</style>
 
 <!-- Why Choose Us -->
 <section class="py-24 bg-slate-50 relative overflow-hidden">

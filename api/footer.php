@@ -77,6 +77,9 @@
     </div>
 </footer>
 
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
 <script>
     // Initialize Lucide Icons
     lucide.createIcons();
@@ -115,6 +118,45 @@
     }, observerOptions);
 
     document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    // Projects Carousel (Swiper) — scroll / drag to navigate
+    if (document.querySelector('.projects-swiper')) {
+        new Swiper('.projects-swiper', {
+            loop: false,
+            grabCursor: true,
+            watchSlidesProgress: true,
+            slidesPerView: 1,
+            spaceBetween: 24,
+            speed: 500,
+            freeMode: {
+                enabled: true,
+                momentum: true,
+                momentumRatio: 0.6,
+            },
+            mousewheel: {
+                enabled: true,
+                forceToAxis: true,   // only intercept horizontal scroll intent
+            },
+            pagination: {
+                el: '#proj-pagination',
+                clickable: true,
+            },
+            breakpoints: {
+                640: {
+                    slidesPerView: 1.5,
+                    spaceBetween: 24,
+                },
+                768: {
+                    slidesPerView: 2,
+                    spaceBetween: 28,
+                },
+                1024: {
+                    slidesPerView: 3,
+                    spaceBetween: 32,
+                }
+            }
+        });
+    }
 </script>
 </body>
 

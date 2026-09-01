@@ -17,7 +17,7 @@ if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true
     if ($admin_id !== false) {
         $is_logged_in = true;
         $_SESSION['admin_logged_in'] = true;
-        $_SESSION['admin_id'] = (int)$admin_id;
+        $_SESSION['admin_id'] = (int) $admin_id;
     }
 }
 
@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['login_time'] = time();
                 $_SESSION['user_agent'] = $_SERVER['HTTP_USER_AGENT'] ?? '';
                 unset($_SESSION['failed_attempts']);
-                
+
                 // Set secure HTTP-only cookies for serverless Vercel compatibility
                 $is_secure = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on';
                 $expiry = time() + 86400 * 7; // 7 days
@@ -80,6 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -115,7 +116,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         body::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background: url('<?php echo $base_path; ?>assets/hero.png') no-repeat center center/cover;
             opacity: 0.25;
             z-index: -1;
@@ -143,11 +147,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             margin-bottom: 1rem;
         }
 
-        .login-title { font-size: 1.75rem; font-weight: 800; margin-bottom: 0.5rem; }
-        .login-subtitle { font-size: 0.875rem; color: rgba(255, 255, 255, 0.7); margin-bottom: 2rem; }
+        .login-title {
+            font-size: 1.75rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
 
-        .form-group { margin-bottom: 1.5rem; text-align: left; }
-        .form-group label { display: block; margin-bottom: 0.5rem; font-size: 0.875rem; font-weight: 600; color: rgba(255, 255, 255, 0.9); }
+        .login-subtitle {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+        }
 
         .form-control {
             width: 100%;
@@ -206,9 +229,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             transition: 0.3s;
         }
 
-        .back-link:hover { color: #fff; }
+        .back-link:hover {
+            color: #fff;
+        }
     </style>
 </head>
+
 <body>
     <div class="login-card">
         <div class="logo-wrapper">
@@ -238,4 +264,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <a href="index.php" class="back-link">← Back to Website</a>
     </div>
 </body>
+
 </html>

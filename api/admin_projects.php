@@ -13,16 +13,29 @@ if (isset($_POST['delete_id'])) {
     if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
         die("CSRF token validation failed.");
     }
-    
+
     $id = (int) $_POST['delete_id'];
     try {
+        // Get image URL before deleting
+        $stmt_img = $pdo->prepare("SELECT image_url FROM projects WHERE id = ?");
+        $stmt_img->execute([$id]);
+        $image_url = $stmt_img->fetchColumn();
+
         $stmt_title = $pdo->prepare("SELECT title FROM projects WHERE id = ?");
         $stmt_title->execute([$id]);
         $proj_title = $stmt_title->fetchColumn();
 
         $stmt = $pdo->prepare("DELETE FROM projects WHERE id = ?");
         $stmt->execute([$id]);
-        
+
+        // Delete image file if it's a local asset
+        if ($image_url && strpos($image_url, 'assets/') === 0) {
+            $file_path = dirname(__DIR__) . '/' . $image_url;
+            if (file_exists($file_path)) {
+                unlink($file_path);
+            }
+        }
+
         $log_stmt = $pdo->prepare("INSERT INTO activity_logs (action) VALUES (?)");
         $log_stmt->execute(["Deleted Project: $proj_title"]);
 
@@ -57,7 +70,8 @@ if (isset($_POST['add_project'])) {
             if (!file_exists($disk_target_dir)) {
                 mkdir($disk_target_dir, 0755, true);
             }
-            $new_filename = uniqid('proj_') . '.' . $ext;
+            // Always save as WebP for better compression
+            $new_filename = uniqid('proj_') . '.webp';
             $target_file = $disk_target_dir . $new_filename;
 
             if (function_exists('imagecreatetruecolor')) {
@@ -66,24 +80,28 @@ if (isset($_POST['add_project'])) {
                     $width = $img_info[0];
                     $height = $img_info[1];
                     $mime = $img_info['mime'];
-                    
+
+                    // Max dimensions for portfolio images
                     $max_width = 1200;
-                    if ($width > $max_width) {
-                        $new_width = $max_width;
-                        $new_height = floor($height * ($max_width / $width));
+                    $max_height = 1600;
+
+                    if ($width > $max_width || $height > $max_height) {
+                        $ratio = min($max_width / $width, $max_height / $height);
+                        $new_width = (int)($width * $ratio);
+                        $new_height = (int)($height * $ratio);
                     } else {
                         $new_width = $width;
                         $new_height = $height;
                     }
-                    
+
                     $image_p = imagecreatetruecolor($new_width, $new_height);
-                    if ($ext == 'png' || $ext == 'webp') {
-                        imagealphablending($image_p, false);
-                        imagesavealpha($image_p, true);
-                        $transparent = imagecolorallocatealpha($image_p, 255, 255, 255, 127);
-                        imagefilledrectangle($image_p, 0, 0, $new_width, $new_height, $transparent);
-                    }
-                    
+
+                    // Handle transparency for PNG/GIF
+                    imagealphablending($image_p, false);
+                    imagesavealpha($image_p, true);
+                    $transparent = imagecolorallocatealpha($image_p, 255, 255, 255, 127);
+                    imagefilledrectangle($image_p, 0, 0, $new_width, $new_height, $transparent);
+
                     switch($mime) {
                         case 'image/jpeg': $image = imagecreatefromjpeg($source_file); break;
                         case 'image/png': $image = imagecreatefrompng($source_file); break;
@@ -91,19 +109,16 @@ if (isset($_POST['add_project'])) {
                         case 'image/webp': $image = imagecreatefromwebp($source_file); break;
                         default: $image = false;
                     }
-                    
+
                     if ($image !== false) {
                         imagecopyresampled($image_p, $image, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
-                        
-                        $success = false;
-                        switch($mime) {
-                            case 'image/jpeg': $success = imagejpeg($image_p, $target_file, 85); break;
-                            case 'image/png': $success = imagepng($image_p, $target_file, 8); break;
-                            case 'image/gif': $success = imagegif($image_p, $target_file); break;
-                            case 'image/webp': $success = imagewebp($image_p, $target_file, 85); break;
-                        }
+
+                        // Save as WebP with 80% quality (good balance of size/quality)
+                        $success = imagewebp($image_p, $target_file, 80);
+
                         imagedestroy($image_p);
                         imagedestroy($image);
+
                         if ($success) {
                             $image_url = 'assets/' . $new_filename;
                             chmod($target_file, 0644);
@@ -111,6 +126,7 @@ if (isset($_POST['add_project'])) {
                     }
                 }
             } else {
+                // Fallback without GD - just validate and move
                 $finfo = finfo_open(FILEINFO_MIME_TYPE);
                 $mime_type = finfo_file($finfo, $source_file);
                 finfo_close($finfo);
