@@ -33,9 +33,10 @@
             </p>
 
             <div class="flex flex-wrap gap-5 pt-6 pb-4 reveal reveal-delay-5">
-                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=hydriaconstructioninc@gmail.com&su=Project%20Inquiry" target="_blank" rel="noopener"
+                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=hydriaconstructioninc@gmail.com&su=Project%20Inquiry"
+                    target="_blank" rel="noopener"
                     class="group inline-flex items-center gap-2 px-8 py-4 bg-accent hover:bg-accent-hover text-white font-black text-sm rounded-xl transition-all duration-300 shadow-xl shadow-accent/20 hover:shadow-accent/40 hover:scale-105">
-                    GET A FREE QUOTE
+                    WORK WITH US
                     <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
                 </a>
                 <a href="#projects"
@@ -466,39 +467,77 @@
             <h3 class="text-primary text-5xl font-display">ARCHITECTURAL MILESTONES</h3>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <?php
-            require_once 'db.php';
-            try {
-                $stmt = $pdo->query("SELECT * FROM projects ORDER BY id DESC");
-                $i = 0;
-                if ($stmt->rowCount() > 0) {
-                    while ($row = $stmt->fetch()) {
-                        $title = htmlspecialchars($row['title'] ?? 'Project Title');
-                        $category = htmlspecialchars($row['category'] ?? 'Category');
-                        $image_url = htmlspecialchars($row['image_url'] ?? 'assets/villa.png');
-                        if (strpos($image_url, 'assets/') === 0) {
-                            $image_url = (isset($base_path) ? $base_path : '') . $image_url;
-                        }
+        <div class="relative group/carousel">
+            <div id="projects-carousel" class="flex gap-8 overflow-x-auto scroll-smooth pb-8 snap-x snap-mandatory" style="scrollbar-width: none; -ms-overflow-style: none;">
+                <?php
+                require_once 'db.php';
+                try {
+                    $stmt = $pdo->query("SELECT * FROM projects ORDER BY id DESC");
+                    $i = 0;
+                    if ($stmt->rowCount() > 0) {
+                        while ($row = $stmt->fetch()) {
+                            $title = htmlspecialchars($row['title'] ?? 'Project Title');
+                            $category = htmlspecialchars($row['category'] ?? 'Category');
+                            $image_url = htmlspecialchars($row['image_url'] ?? 'assets/villa.png');
+                            if (strpos($image_url, 'assets/') === 0) {
+                                $image_url = (isset($base_path) ? $base_path : '') . $image_url;
+                            }
 
-                        echo "
-                        <div class=\"reveal reveal-delay-1 group relative overflow-hidden rounded-[2rem] bg-slate-100 aspect-[4/5] shadow-lg hover:shadow-2xl transition-all duration-500\">
-                            <img src=\"$image_url\" alt=\"$title\" class=\"w-full h-full object-cover transition-transform duration-700 group-hover:scale-110\">
-                            <div class=\"absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-10\">
-                                <span class=\"text-accent font-black text-xs uppercase tracking-widest mb-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500\">$category</span>
-                                <h4 class=\"text-white text-2xl font-display transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75\">$title</h4>
-                            </div>
-                        </div>";
-                        $i++;
+                            echo "
+                            <div class=\"reveal reveal-delay-1 group relative overflow-hidden rounded-[2rem] bg-slate-100 aspect-[4/5] shadow-lg hover:shadow-2xl transition-all duration-500 flex-shrink-0 w-80 snap-start\">
+                                <img src=\"$image_url\" alt=\"$title\" class=\"w-full h-full object-cover transition-transform duration-700 group-hover:scale-110\">
+                                <div class=\"absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-10\">
+                                    <span class=\"text-accent font-black text-xs uppercase tracking-widest mb-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500\">$category</span>
+                                    <h4 class=\"text-white text-2xl font-display transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75\">$title</h4>
+                                </div>
+                            </div>";
+                            $i++;
+                        }
+                    } else {
+                        echo "<p class='text-center py-20 text-slate-400 w-full'>No projects found in the database.</p>";
                     }
-                } else {
-                    echo "<p class='col-span-full text-center py-20 text-slate-400'>No projects found in the database.</p>";
+                } catch (PDOException $e) {
+                    echo "<p class='text-center py-20 text-slate-400 w-full'>Database connection error.</p>";
                 }
-            } catch (PDOException $e) {
-                echo "<p class='col-span-full text-center py-20 text-slate-400'>Database connection error.</p>";
-            }
-            ?>
+                ?>
+            </div>
+
+            <button id="scroll-left" class="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 w-14 h-14 bg-white/90 backdrop-blur-md rounded-full shadow-2xl items-center justify-center text-primary hover:bg-accent hover:text-white transition-all duration-300 z-10 opacity-0 group-hover/carousel:opacity-100">
+                <i data-lucide="chevron-left" class="w-6 h-6"></i>
+            </button>
+            <button id="scroll-right" class="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 w-14 h-14 bg-white/90 backdrop-blur-md rounded-full shadow-2xl items-center justify-center text-primary hover:bg-accent hover:text-white transition-all duration-300 z-10 opacity-0 group-hover/carousel:opacity-100">
+                <i data-lucide="chevron-right" class="w-6 h-6"></i>
+            </button>
         </div>
+
+        <script>
+            (function() {
+                const carousel = document.getElementById('projects-carousel');
+                const leftBtn = document.getElementById('scroll-left');
+                const rightBtn = document.getElementById('scroll-right');
+                if (!carousel || !leftBtn || !rightBtn) return;
+
+                const scrollAmount = 340;
+
+                leftBtn.addEventListener('click', () => {
+                    carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+                });
+
+                rightBtn.addEventListener('click', () => {
+                    carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+                });
+
+                carousel.addEventListener('scroll', () => {
+                    leftBtn.style.opacity = carousel.scrollLeft <= 10 ? '0' : '';
+                    rightBtn.style.opacity = carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth - 10 ? '0' : '';
+                });
+
+                window.addEventListener('resize', () => {
+                    leftBtn.style.opacity = carousel.scrollLeft <= 10 ? '0' : '';
+                    rightBtn.style.opacity = carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth - 10 ? '0' : '';
+                });
+            })();
+        </script>
     </div>
 </section>
 
