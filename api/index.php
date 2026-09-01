@@ -468,7 +468,7 @@
         </div>
 
         <div class="relative group/carousel">
-            <div id="projects-carousel" class="flex gap-8 overflow-x-auto scroll-smooth pb-8 snap-x snap-mandatory" style="scrollbar-width: none; -ms-overflow-style: none;">
+            <div id="projects-carousel" class="flex gap-6 overflow-x-auto scroll-smooth pb-6 snap-x snap-mandatory" style="scrollbar-width: none; -ms-overflow-style: none;">
                 <?php
                 require_once 'db.php';
                 try {
@@ -484,9 +484,9 @@
                             }
 
                             echo "
-                            <div class=\"reveal reveal-delay-1 group relative overflow-hidden rounded-[2rem] bg-slate-100 aspect-[4/5] shadow-lg hover:shadow-2xl transition-all duration-500 flex-shrink-0 w-80 snap-start\">
+                            <div class=\"reveal reveal-delay-1 group relative overflow-hidden rounded-[2rem] bg-slate-100 aspect-[3/4] shadow-lg hover:shadow-2xl transition-all duration-500 flex-shrink-0 w-64 snap-start\">
                                 <img src=\"$image_url\" alt=\"$title\" class=\"w-full h-full object-cover transition-transform duration-700 group-hover:scale-110\">
-                                <div class=\"absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-10\">
+                                <div class=\"absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8\">
                                     <span class=\"text-accent font-black text-xs uppercase tracking-widest mb-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500\">$category</span>
                                     <h4 class=\"text-white text-2xl font-display transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75\">$title</h4>
                                 </div>
@@ -502,11 +502,11 @@
                 ?>
             </div>
 
-            <button id="scroll-left" class="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 w-14 h-14 bg-white/90 backdrop-blur-md rounded-full shadow-2xl items-center justify-center text-primary hover:bg-accent hover:text-white transition-all duration-300 z-10 opacity-0 group-hover/carousel:opacity-100">
-                <i data-lucide="chevron-left" class="w-6 h-6"></i>
+            <button id="scroll-left" class="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/90 backdrop-blur-md rounded-full shadow-2xl items-center justify-center text-primary hover:bg-accent hover:text-white transition-all duration-300 z-10 opacity-0 group-hover/carousel:opacity-100">
+                <i data-lucide="chevron-left" class="w-5 h-5"></i>
             </button>
-            <button id="scroll-right" class="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 w-14 h-14 bg-white/90 backdrop-blur-md rounded-full shadow-2xl items-center justify-center text-primary hover:bg-accent hover:text-white transition-all duration-300 z-10 opacity-0 group-hover/carousel:opacity-100">
-                <i data-lucide="chevron-right" class="w-6 h-6"></i>
+            <button id="scroll-right" class="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/90 backdrop-blur-md rounded-full shadow-2xl items-center justify-center text-primary hover:bg-accent hover:text-white transition-all duration-300 z-10 opacity-0 group-hover/carousel:opacity-100">
+                <i data-lucide="chevron-right" class="w-5 h-5"></i>
             </button>
         </div>
 
@@ -517,7 +517,7 @@
                 const rightBtn = document.getElementById('scroll-right');
                 if (!carousel || !leftBtn || !rightBtn) return;
 
-                const scrollAmount = 340;
+                const scrollAmount = 300;
 
                 leftBtn.addEventListener('click', () => {
                     carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
@@ -527,15 +527,14 @@
                     carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
                 });
 
-                carousel.addEventListener('scroll', () => {
+                const updateButtons = () => {
                     leftBtn.style.opacity = carousel.scrollLeft <= 10 ? '0' : '';
                     rightBtn.style.opacity = carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth - 10 ? '0' : '';
-                });
+                };
 
-                window.addEventListener('resize', () => {
-                    leftBtn.style.opacity = carousel.scrollLeft <= 10 ? '0' : '';
-                    rightBtn.style.opacity = carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth - 10 ? '0' : '';
-                });
+                carousel.addEventListener('scroll', updateButtons);
+                window.addEventListener('resize', updateButtons);
+                updateButtons();
             })();
         </script>
     </div>
