@@ -60,7 +60,7 @@ if (isset($_POST['add_project'])) {
     } elseif (!empty($_FILES['image']['name']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
         $source_file = $_FILES['image']['tmp_name'];
         $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
-        $allowed = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
+        $allowed = ['jpg', 'jpeg', 'png', 'gif'];
         $max_file_size = 5 * 1024 * 1024;
 
         if ($_FILES['image']['size'] > $max_file_size) {
@@ -70,8 +70,7 @@ if (isset($_POST['add_project'])) {
             if (!file_exists($disk_target_dir)) {
                 mkdir($disk_target_dir, 0755, true);
             }
-            // Always save as WebP for better compression
-            $new_filename = uniqid('proj_') . '.webp';
+            $new_filename = uniqid('proj_') . '.' . $ext;
             $target_file = $disk_target_dir . $new_filename;
 
             if (function_exists('imagecreatetruecolor')) {
@@ -81,44 +80,40 @@ if (isset($_POST['add_project'])) {
                     $height = $img_info[1];
                     $mime = $img_info['mime'];
 
-                    // Max dimensions for portfolio images
                     $max_width = 1200;
-                    $max_height = 1600;
-
-                    if ($width > $max_width || $height > $max_height) {
-                        $ratio = min($max_width / $width, $max_height / $height);
-                        $new_width = (int)($width * $ratio);
-                        $new_height = (int)($height * $ratio);
-                    } else {
-                        $new_width = $width;
-                        $new_height = $height;
+                    $new_width = $width;
+                    $new_height = $height;
+                    if ($width > $max_width) {
+                        $new_width = $max_width;
+                        $new_height = floor($height * ($max_width / $width));
                     }
 
                     $image_p = imagecreatetruecolor($new_width, $new_height);
-
-                    // Handle transparency for PNG/GIF
-                    imagealphablending($image_p, false);
-                    imagesavealpha($image_p, true);
-                    $transparent = imagecolorallocatealpha($image_p, 255, 255, 255, 127);
-                    imagefilledrectangle($image_p, 0, 0, $new_width, $new_height, $transparent);
+                    if ($ext == 'png') {
+                        imagealphablending($image_p, false);
+                        imagesavealpha($image_p, true);
+                        $transparent = imagecolorallocatealpha($image_p, 255, 255, 255, 127);
+                        imagefilledrectangle($image_p, 0, 0, $new_width, $new_height, $transparent);
+                    }
 
                     switch($mime) {
                         case 'image/jpeg': $image = imagecreatefromjpeg($source_file); break;
                         case 'image/png': $image = imagecreatefrompng($source_file); break;
                         case 'image/gif': $image = imagecreatefromgif($source_file); break;
-                        case 'image/webp': $image = imagecreatefromwebp($source_file); break;
                         default: $image = false;
                     }
 
                     if ($image !== false) {
                         imagecopyresampled($image_p, $image, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
 
-                        // Save as WebP with 80% quality (good balance of size/quality)
-                        $success = imagewebp($image_p, $target_file, 80);
-
+                        $success = false;
+                        switch($mime) {
+                            case 'image/jpeg': $success = imagejpeg($image_p, $target_file, 85); break;
+                            case 'image/png': $success = imagepng($image_p, $target_file, 8); break;
+                            case 'image/gif': $success = imagegif($image_p, $target_file); break;
+                        }
                         imagedestroy($image_p);
                         imagedestroy($image);
-
                         if ($success) {
                             $image_url = 'assets/' . $new_filename;
                             chmod($target_file, 0644);
@@ -126,18 +121,17 @@ if (isset($_POST['add_project'])) {
                     }
                 }
             } else {
-                // Fallback without GD - just validate and move
                 $finfo = finfo_open(FILEINFO_MIME_TYPE);
                 $mime_type = finfo_file($finfo, $source_file);
                 finfo_close($finfo);
-                $allowed_mimes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+                $allowed_mimes = ['image/jpeg', 'image/png', 'image/gif'];
                 if (in_array($mime_type, $allowed_mimes)) {
                     if (move_uploaded_file($source_file, $target_file)) {
                         $image_url = 'assets/' . $new_filename;
                         chmod($target_file, 0644);
                     }
                 } else {
-                    $message = "<div class='alert-modern error'>❌ Invalid image format. Only JPG, PNG, GIF, and WebP are allowed.</div>";
+                    $message = "<div class='alert-modern error'>❌ Invalid image format. Only JPG, PNG, and GIF are allowed.</div>";
                 }
             }
         }
